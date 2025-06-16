@@ -19,12 +19,19 @@
       />
 
       <p class="text-center text-sm/6 text-gray-500">
-        Not a user?
+        Don't have an account?
         {{ " " }}
         <NuxtLink
           href="/register"
           class="font-semibold text-blue-600 hover:text-blue-500"
           >Create your account &rarr;</NuxtLink
+        >
+      </p>
+      <p class="text-center">
+        <NuxtLink
+          href="/"
+          class="text-xs font-semibold text-gray-400 hover:text-gray-500"
+          >&larr; Back home </NuxtLink
         >
       </p>
     </div>

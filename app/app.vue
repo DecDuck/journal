@@ -4,6 +4,7 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <NotificationStack />
 </template>
 
 <script setup lang="ts">

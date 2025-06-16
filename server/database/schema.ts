@@ -25,3 +25,25 @@ export const userSigninMethods = sqliteTable(
   },
   (table) => [primaryKey({ columns: [table.userId, table.method] })]
 );
+
+export const tag = sqliteTable("tag", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+});
+
+export const post = sqliteTable("table", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(), // Markdown formatted
+  tags: text("tags").notNull(), // comma-separated array of tag IDs
+  attachments: text("attachments").notNull(), // comma-separated array of object IDs
+});
+
+export const reply = sqliteTable("reply", {
+  id: text("id").primaryKey(),
+  postId: text("postId")
+    .notNull()
+    .references(() => post.id),
+  content: text("content").notNull(),
+  attachments: text("attachments").notNull(), // comma-separated array of object IDs
+});

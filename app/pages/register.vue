@@ -27,6 +27,13 @@
           >Sign in &rarr;</NuxtLink
         >
       </p>
+      <p class="text-center">
+        <NuxtLink
+          href="/"
+          class="text-xs font-semibold text-gray-400 hover:text-gray-500"
+          >&larr; Back home
+        </NuxtLink>
+      </p>
     </div>
   </div>
 </template>
