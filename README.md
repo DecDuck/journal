@@ -1,3 +1,8 @@
+<div align="center">
+<img src="https://raw.githubusercontent.com/DecDuck/journal/refs/heads/main/icon.png" width="200rem"/>
+</div>
+<br/>
+
 # Journal
 
 Journal is an open-source lightweight forum software designed to run exclusively on Cloudflare's workers, for cheap or free. It was originally built by the Drop OSS team to be used for their project, but was built with alternative whitelabelling options in mind.
