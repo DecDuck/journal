@@ -7,6 +7,7 @@ export const RegisterForm = Forminator(
     username: "5 <= string.alphanumeric <= 10",
     email: "string.email",
     password: "string >= 14",
+    cftoken: "string",
   }),
   {
     displayName: {
@@ -26,6 +27,10 @@ export const RegisterForm = Forminator(
       name: "Password",
       type: "password",
       description: "At least 14 characters.",
+    },
+    cftoken: {
+      name: "",
+      type: "hidden",
     },
   }
 );

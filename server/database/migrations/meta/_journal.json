@@ -8,6 +8,20 @@
       "when": 1750041938746,
       "tag": "0000_pink_whistler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1750056809788,
+      "tag": "0001_nostalgic_maelstrom",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1750057277567,
+      "tag": "0002_known_expediter",
+      "breakpoints": true
     }
   ]
 }

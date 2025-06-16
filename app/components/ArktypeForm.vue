@@ -20,6 +20,7 @@
           :type="options.type ?? 'text'"
           :name="fieldName"
           :autocomplete="fieldName"
+          :placeholder="options.placeholder"
           required
           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
         />
@@ -54,6 +55,10 @@
           </h3>
         </div>
       </div>
+    </div>
+
+    <div v-if="hasTurnstile" class="w-full flex items-center justify-center">
+      <div ref="turnstile" />
     </div>
 
     <div>
@@ -101,12 +106,59 @@ const validationResult = computed<{ [key: string]: string }>(() => {
   return errors;
 });
 const validForm = computed(
-  () => Object.keys(validationResult.value).length == 0
+  () =>
+    Object.keys(validationResult.value).length == 0 &&
+    (hasTurnstile ? turnstileToken.value !== undefined : true)
 );
+
+/* Cloudflare Turnstile logic */
+const cftokenConst = "cftoken";
+const hasTurnstile =
+  props.forminator.descriptions.find((e) => e[0] == cftokenConst) !== undefined;
+
+const turnstile = ref<HTMLDivElement>();
+const turnstileWidgetId = ref<string | undefined>(undefined);
+const turnstileToken = ref<string | undefined>(undefined);
+onMounted(() => {
+  if (hasTurnstile && import.meta.client) {
+    result.value[cftokenConst] = cftokenConst; // To bypass Arktype validator for this
+
+    if (!turnstile.value)
+      throw new Error(
+        "Could not initialise Turnstile but it is required - render component does not exist at mount-time"
+      );
+    const globalTurnstile = (
+      window as unknown as {
+        turnstile: {
+          render: (
+            mountpoint: string | HTMLDivElement,
+            options: {
+              sitekey: string;
+              callback: (token: string) => void;
+            }
+          ) => string;
+        };
+      }
+    ).turnstile;
+
+    const runtimeConfig = useRuntimeConfig();
+
+    turnstileWidgetId.value = globalTurnstile.render(turnstile.value, {
+      sitekey: runtimeConfig.public.turnstileSitekey,
+      callback(token) {
+        turnstileToken.value = token;
+      },
+    });
+  }
+});
+/* End Turnstile logic */
 
 const formLoading = ref(false);
 const formError = ref<undefined | string>(undefined);
 async function submit() {
+  if (hasTurnstile) {
+    result.value[cftokenConst] = turnstileToken.value;
+  }
   return await $journalFetch(props.endpoint, {
     body: result.value,
     method: props.opts?.method ?? "POST",
@@ -117,19 +169,21 @@ function submit_wrapper() {
   if (!validForm.value) return;
   formLoading.value = true;
   submit()
-    .catch((e) => {
-      if (e instanceof FetchError) {
-        formError.value =
-          e.statusMessage ??
-          e.message ??
-          `An unknown error occurred. ${e.statusCode}`;
-        return;
+    .then(
+      (e) => {
+        emit("submit", e);
+      },
+      (e) => {
+        if (e instanceof FetchError) {
+          formError.value =
+            e.statusMessage ??
+            e.message ??
+            `An unknown error occurred. ${e.statusCode}`;
+          return;
+        }
+        formError.value = e;
       }
-      formError.value = e;
-    })
-    .then((e) => {
-      emit("submit", e);
-    })
+    )
     .finally(() => {
       formLoading.value = false;
     });

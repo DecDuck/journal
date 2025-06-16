@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/d1";
-export { sql, eq, and, or } from "drizzle-orm";
 
 import * as schema from "../database/schema";
+export { sql, eq, and, or } from "drizzle-orm";
 
 export const tables = schema;
 
@@ -10,3 +10,8 @@ export function useDrizzle() {
 }
 
 export type User = typeof schema.users.$inferSelect;
+export type userSigninMethod = typeof schema.userSigninMethods.$inferSelect;
+
+export async function first<T>(arr: Promise<Array<T>>) {
+  return (await arr).at(0);
+}

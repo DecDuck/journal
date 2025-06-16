@@ -13,15 +13,18 @@
       </div>
       <ArktypeForm
         :forminator="RegisterForm"
-        endpoint="/api/v1/register"
+        endpoint="/api/v1/auth/password/register"
         :opts="{ submitText: 'Register' }"
+        @submit="() => onRegister()"
       />
 
       <p class="text-center text-sm/6 text-gray-500">
-        Not a member?
+        Already have an account?
         {{ " " }}
-        <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500"
-          >Start a 14-day free trial</a
+        <NuxtLink
+          href="/signin"
+          class="font-semibold text-blue-600 hover:text-blue-500"
+          >Sign in &rarr;</NuxtLink
         >
       </p>
     </div>
@@ -38,4 +41,10 @@ definePageMeta({
 useHead({
   title: "Register",
 });
+
+const router = useRouter();
+
+function onRegister() {
+  router.push("/signin");
+}
 </script>

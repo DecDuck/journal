@@ -56,7 +56,7 @@
                         <span class="sr-only">Open user menu</span>
                         <img
                           class="size-8 rounded-full"
-                          :src="user.avatar"
+                          :src="useObject(user.avatar)"
                           alt=""
                         />
                       </MenuButton>
@@ -90,7 +90,7 @@
                     </transition>
                   </Menu>
                 </div>
-                <div class="ml-4 flex items-center md:ml-6">
+                <div v-else class="ml-4 flex items-center md:ml-6">
                   <NuxtLink
                     href="/signin"
                     class="text-stone-300 hover:bg-stone-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
