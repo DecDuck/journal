@@ -31,12 +31,12 @@ export async function useAdminAuthenticated(
 }
 
 export async function useAuthenticated(h3: H3Event) {
-  const userId = await useServerUser(h3);
+  const userId = await useSoftAuthenticated(h3);
   if (!userId) throw createError({ statusCode: 403 });
   return userId;
 }
 
-export async function useServerUser(h3: H3Event) {
+export async function useSoftAuthenticated(h3: H3Event) {
   const session = await useSession<JournalSession>(h3, GLOBAL_SESSION_CONFIG);
   const userId = session.data.userId;
 
@@ -47,7 +47,7 @@ export async function usePermissionLevel(
   h3: H3Event,
   drizzle: ReturnType<typeof useDrizzle>
 ) {
-  const userId = await useServerUser(h3);
+  const userId = await useSoftAuthenticated(h3);
 
   // -1 means we're not logged in
   let permissionLevel = -1;

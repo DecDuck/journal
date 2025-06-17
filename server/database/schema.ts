@@ -50,11 +50,17 @@ export const tag = sqliteTable("tag", {
   name: text("name").notNull(),
 });
 
-export const post = sqliteTable("table", {
+export const post = sqliteTable("post", {
   id: text("id").primaryKey(),
   topicId: text("topicId")
     .notNull()
     .references(() => topic.id, { onDelete: "cascade" }),
+  categoryId: text("categoryId")
+    .notNull()
+    .references(() => category.id, { onDelete: "cascade" }),
+  createdAt: integer("createdAt", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
   title: text("title").notNull(),
   content: text("content").notNull(), // Markdown formatted
   tags: text("tags").notNull(), // comma-separated array of tag IDs

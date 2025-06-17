@@ -1,7 +1,7 @@
 <template>
   <form
     method="POST"
-    class="space-y-4"
+    class="space-y-4 relative"
     @submit.prevent="() => submit_wrapper()"
   >
     <div
@@ -15,6 +15,7 @@
       >
       <div class="mt-2">
         <input
+          v-if="!options.type || !specialEditors[options.type]"
           :id="fieldName"
           v-model="result[fieldName]"
           :type="options.type ?? 'text'"
@@ -23,6 +24,12 @@
           :placeholder="options.placeholder"
           :required="options.default !== undefined"
           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
+        />
+        <component
+          :is="specialEditors[options.type]"
+          v-else
+          v-model="result[fieldName]"
+          :configuration="options.configuration"
         />
       </div>
       <p
@@ -71,6 +78,8 @@
         {{ props.opts?.submitText ?? "Submit" }}
       </LoadingButton>
     </div>
+
+    <div v-if="formLoading" class="absolute inset-0 bg-white/30" />
   </form>
 </template>
 
@@ -79,14 +88,27 @@ import { XCircleIcon } from "@heroicons/vue/24/outline";
 import { ArkErrors } from "arktype";
 import { FetchError } from "ofetch";
 import type { ForminatorResult } from "~~/forms/_form";
+import MarkdownEditor from "./Form/MarkdownEditor.vue";
+import TagEditor from "./Form/TagEditor.vue";
+import AttachmentsEditor from "./Form/AttachmentsEditor.vue";
 
 type UnknownObject = { [key: string]: unknown };
+
+const specialEditors: { [key: string]: Component } = {
+  markdown: MarkdownEditor,
+  tags: TagEditor,
+  attachments: AttachmentsEditor,
+};
 
 const props = defineProps<{
   forminator: ForminatorResult<unknown>;
   endpoint: string;
   dft?: UnknownObject;
-  opts?: { method?: "POST" | "PUT" | "PATCH"; submitText?: string, extra?: object };
+  opts?: {
+    method?: "POST" | "PUT" | "PATCH";
+    submitText?: string;
+    extra?: object;
+  };
 }>();
 const emit = defineEmits<{
   (e: "submit", value: unknown): void;
@@ -164,17 +186,48 @@ onMounted(() => {
 });
 /* End Turnstile logic */
 
+/* Attachment Logic */
+const attachmentFields = props.forminator.descriptions.filter(
+  (e) => e[1].type === "attachments"
+);
+/* End Attachment Logic */
+
 const formLoading = ref(false);
 const formError = ref<undefined | string>(undefined);
 async function submit() {
   if (hasTurnstile) {
     result.value[cftokenConst] = turnstileToken.value;
   }
+
+  let body: object = {
+    ...result.value,
+    ...props.opts?.extra,
+  };
+
+  if (attachmentFields.length > 0) {
+    for (const [field] of attachmentFields) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete (body as UnknownObject)[field];
+    }
+
+    const newBody = new FormData();
+
+    for (const [key, value] of Object.entries(body)) {
+      newBody.set(key, JSON.stringify(value));
+    }
+
+    for (const [field] of attachmentFields) {
+      const files = result.value[field] as File[];
+      for (const file of files) {
+        newBody.append(field, file);
+      }
+    }
+
+    body = newBody;
+  }
+
   return await $journalFetch(props.endpoint, {
-    body: {
-      ...result.value,
-      ...props.opts?.extra
-    },
+    body,
     method: props.opts?.method ?? "POST",
   });
 }

@@ -23,7 +23,8 @@ type ForminatorMetadata<T> = {
   type?: string;
   placeholder?: string;
   description?: string;
-  default?: T
+  default?: T;
+  configuration?: object;
 };
 
 export type ForminatorResult<V> = {

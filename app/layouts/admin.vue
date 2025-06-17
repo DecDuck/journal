@@ -249,6 +249,7 @@ import {
   Cog6ToothIcon,
   HomeIcon,
   InboxStackIcon,
+  TagIcon,
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
@@ -265,6 +266,11 @@ const navigation = computed(() => {
       name: "Categories",
       href: "/admin/category",
       icon: InboxStackIcon,
+    },
+    {
+      name: "Tags",
+      href: "/admin/tag",
+      icon: TagIcon,
     },
     {
       name: "Settings",

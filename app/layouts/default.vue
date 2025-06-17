@@ -19,19 +19,25 @@
                 </div>
                 <div class="hidden md:block">
                   <div class="ml-10 flex items-baseline space-x-4">
-                    <NuxtLink
-                      v-for="item in navigation"
-                      :key="item.name"
-                      :href="item.href"
-                      :class="[
-                        item.current
-                          ? 'bg-zinc-900 text-white'
-                          : 'text-zinc-300 hover:bg-zinc-700 hover:text-white',
-                        'rounded-md px-3 py-2 text-sm font-medium',
-                      ]"
-                      :aria-current="item.current ? 'page' : undefined"
-                      >{{ item.name }}</NuxtLink
-                    >
+                    <div v-for="item in navigation" :key="item.name">
+                      <component
+                        :is="item.desktopComponent"
+                        v-if="item.desktopComponent"
+                        :current="item.current"
+                      />
+                      <NuxtLink
+                        v-else
+                        :href="item.href"
+                        :class="[
+                          item.current
+                            ? 'bg-zinc-900 text-white'
+                            : 'text-zinc-300 hover:bg-zinc-700 hover:text-white',
+                          'rounded-md px-3 py-2 text-sm font-medium',
+                        ]"
+                        :aria-current="item.current ? 'page' : undefined"
+                        >{{ item.name }}</NuxtLink
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
@@ -208,7 +214,7 @@
 </template>
 
 <script setup lang="ts">
-import { NuxtLink } from "#components";
+import { NavCategoryButton, NuxtLink } from "#components";
 import {
   Disclosure,
   DisclosureButton,
@@ -229,8 +235,12 @@ const navigation = computed(() => {
   const nav = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
-    { name: "Categories", href: "/category" },
-    { name: "Create a Post", href: "/create" },
+    {
+      name: "Categories",
+      href: "/category",
+      desktopComponent: NavCategoryButton,
+    },
+    { name: "New Post", href: "/new" },
   ];
 
   const [_, activeIndex] = nav.reduce(

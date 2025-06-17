@@ -17,7 +17,8 @@ export async function hashPassword(
   const key = await crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: salt,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      salt: salt as any,
       iterations: 100000,
       hash: "SHA-256",
     },

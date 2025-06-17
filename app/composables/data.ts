@@ -1,5 +1,5 @@
 import type { SerializeObject } from "nitropack";
-import type { Category, Topic } from "~~/server/utils/drizzle";
+import type { Category, Tag, Topic } from "~~/server/utils/drizzle";
 
 export const useCategories = async () => {
   // Not particularly typesafe but we need a way to check if it hasn't been initialised
@@ -9,6 +9,19 @@ export const useCategories = async () => {
   );
   if (state.value === null) {
     const categories = await $journalFetch("/api/v1/category");
+    state.value = categories;
+  }
+  return state;
+};
+
+export const useTags = async () => {
+  // Not particularly typesafe but we need a way to check if it hasn't been initialised
+  const state = useState<Array<SerializeObject<Tag>>>(
+    "tags",
+    () => null as unknown as []
+  );
+  if (state.value === null) {
+    const categories = await $journalFetch("/api/v1/tags");
     state.value = categories;
   }
   return state;
