@@ -5,7 +5,7 @@ import {
   primaryKey,
 } from "drizzle-orm/sqlite-core";
 
-export const users = sqliteTable("users", {
+export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   username: text("username").notNull().unique(),
   displayName: text("displayName").notNull(),
@@ -20,7 +20,7 @@ export const userSigninMethods = sqliteTable(
   {
     userId: text("id")
       .notNull()
-      .references(() => users.id),
+      .references(() => user.id),
     method: text("method").notNull(), // SignMethod enum
     data: text("data").notNull(), // JSON data
   },
@@ -61,6 +61,9 @@ export const post = sqliteTable("post", {
   createdAt: integer("createdAt", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
+  authorId: text("authorId")
+    .notNull()
+    .references(() => user.id),
   title: text("title").notNull(),
   content: text("content").notNull(), // Markdown formatted
   tags: text("tags").notNull(), // comma-separated array of tag IDs
@@ -73,5 +76,8 @@ export const reply = sqliteTable("reply", {
     .notNull()
     .references(() => post.id, { onDelete: "cascade" }),
   content: text("content").notNull(), // markdown formatted
+  createdAt: integer("createdAt", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
   attachments: text("attachments").notNull(), // comma-separated array of object IDs
 });

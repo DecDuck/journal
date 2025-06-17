@@ -32,7 +32,7 @@ export default defineNuxtConfig({
       },
       turnstileSitekey: "1x00000000000000000000AA",
     },
-    sessionSecret: "superdupersecretsuperuduperpdasudij",
+    sessionSecret: "superdupersecretsuperuduperpdasudijkdlas",
     turnstileSecret: "1x0000000000000000000000000000000AA",
     adminToken: "whatanadmintoken",
   },

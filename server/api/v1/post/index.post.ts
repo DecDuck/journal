@@ -25,6 +25,8 @@ export default defineEventHandler(async (h3) => {
       statusMessage: "Must be signed in to post.",
     });
 
+  const userId = await useAuthenticated(h3);
+
   const { body, files } = await readJournalValidatedMultipart(
     h3,
     CreatePostValidator
@@ -58,6 +60,7 @@ export default defineEventHandler(async (h3) => {
     attachments: files.attachments.map((e) => e.pathname).join(","),
     topicId: postTopic.id,
     categoryId: postCategory.id,
+    authorId: userId,
   } satisfies typeof post.$inferInsert;
 
   const newlyCreatedPost = await first(

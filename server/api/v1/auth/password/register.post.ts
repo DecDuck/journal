@@ -1,6 +1,6 @@
 import { RegisterForm } from "~~/forms/register";
 import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
-import { users, userSigninMethods } from "~~/server/database/schema";
+import { user, userSigninMethods } from "~~/server/database/schema";
 import { randomUUID } from "~~/server/utils/uuid";
 import * as jdenticon from "jdenticon";
 import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
@@ -41,8 +41,8 @@ export default defineEventHandler<{
   // Check existing
   const existing = await drizzle
     .select()
-    .from(users)
-    .where(eq(users.username, body.username))
+    .from(user)
+    .where(eq(user.username, body.username))
     .limit(1);
   if (existing.length != 0)
     throw createError({
@@ -65,23 +65,23 @@ export default defineEventHandler<{
     },
   });
 
-  const user = {
+  const newUser = {
     id: userId,
     avatar: avatar.pathname,
     createdAt: new Date(),
     displayName: body.displayName,
     username: body.username,
     email: body.email,
-  } satisfies typeof users.$inferInsert;
+  } satisfies typeof user.$inferInsert;
 
-  const [newUser] = await drizzle.insert(users).values(user).returning();
+  const [newlyCreatedUser] = await drizzle.insert(user).values(newUser).returning();
 
   const passwordAuth = {
     hash: await hashPassword(body.password),
   } satisfies typeof SigninPasswordValidator.infer;
 
   const signinMethod = {
-    userId: newUser.id,
+    userId: newlyCreatedUser.id,
     method: SigninMethod.Password,
     data: JSON.stringify(passwordAuth),
   } satisfies typeof userSigninMethods.$inferInsert;

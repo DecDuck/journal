@@ -47,13 +47,14 @@
 
 <script setup lang="ts">
 import { micromark } from "micromark";
+import DOMPurify from "dompurify";
 
 const model = defineModel<string>();
 
 const markdownPreview = computed(() => {
   // TODO: maybe?? add https://github.com/cure53/DOMPurify
   // micromark says its safe, but this is straight html we are injecting
-  return micromark(model.value ?? "");
+  return DOMPurify.sanitize(micromark(model.value ?? ""));
 });
 
 const contentEditor = ref<HTMLTextAreaElement>();

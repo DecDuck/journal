@@ -20,8 +20,9 @@ export default defineEventHandler(async (h3) => {
     .select()
     .from(post)
     .where(lte(category.readPermission, permissionLevel))
+
     .leftJoin(topic, eq(post.topicId, topic.id))
-    .leftJoin(category, eq(topic.categoryId, category))
+    .leftJoin(category, eq(topic.categoryId, category.id))
     .limit(limit);
 
   return posts;

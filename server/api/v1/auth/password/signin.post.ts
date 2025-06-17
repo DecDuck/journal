@@ -2,7 +2,7 @@ import type { JournalSession } from "#imports";
 import { ArkErrors } from "arktype";
 import { SigninForm } from "~~/forms/signin";
 import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
-import { users, userSigninMethods } from "~~/server/database/schema";
+import { user, userSigninMethods } from "~~/server/database/schema";
 import { first } from "~~/server/utils/drizzle";
 
 export default defineEventHandler<{
@@ -22,19 +22,19 @@ export default defineEventHandler<{
     });
   }
 
-  const user = await first(
+  const fetchedUser = await first(
     drizzle
       .select()
-      .from(users)
+      .from(user)
       .where(
         or(
-          eq(users.email, body.usernameEmail),
-          eq(users.username, body.usernameEmail)
+          eq(user.email, body.usernameEmail),
+          eq(user.username, body.usernameEmail)
         )
       )
       .limit(1)
   );
-  if (!user) throw fail();
+  if (!fetchedUser) throw fail();
 
   const signinMethod = await first(
     drizzle
@@ -42,7 +42,7 @@ export default defineEventHandler<{
       .from(userSigninMethods)
       .where(
         and(
-          eq(userSigninMethods.userId, user.id),
+          eq(userSigninMethods.userId, fetchedUser.id),
           eq(userSigninMethods.method, SigninMethod.Password)
         )
       )
@@ -66,7 +66,7 @@ export default defineEventHandler<{
   // We've signed in at the point
   const session = await useSession<JournalSession>(h3, GLOBAL_SESSION_CONFIG);
 
-  await session.update({ userId: user.id });
+  await session.update({ userId: fetchedUser.id });
 
   await setResponseStatus(h3, 201);
 

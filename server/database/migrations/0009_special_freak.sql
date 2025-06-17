@@ -1,1 +1,0 @@
-ALTER TABLE `table` ADD `categoryId` text NOT NULL REFERENCES category(id);

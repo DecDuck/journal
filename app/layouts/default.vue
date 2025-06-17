@@ -134,7 +134,7 @@
             <DisclosureButton
               v-for="item in navigation"
               :key="item.name"
-              as="a"
+              :as="NuxtLink"
               :href="item.href"
               :class="[
                 item.current

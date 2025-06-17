@@ -5,78 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1750041938746,
-      "tag": "0000_pink_whistler",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1750056809788,
-      "tag": "0001_nostalgic_maelstrom",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1750057277567,
-      "tag": "0002_known_expediter",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1750118346904,
-      "tag": "0003_old_robbie_robertson",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1750122304585,
-      "tag": "0004_eminent_stardust",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1750122593543,
-      "tag": "0005_brown_guardsmen",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1750127741524,
-      "tag": "0006_pretty_pepper_potts",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "6",
-      "when": 1750134621576,
-      "tag": "0007_dashing_jasper_sitwell",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "6",
-      "when": 1750137411261,
-      "tag": "0008_public_ink",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "6",
-      "when": 1750155080563,
-      "tag": "0009_special_freak",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "6",
-      "when": 1750155886170,
-      "tag": "0010_plain_talos",
+      "when": 1750158153400,
+      "tag": "0000_majestic_bromley",
       "breakpoints": true
     }
   ]

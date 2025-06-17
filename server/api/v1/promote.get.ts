@@ -4,7 +4,7 @@
 
 import { type } from "arktype";
 import { throwingArktype } from "~~/server/arktype";
-import { users } from "~~/server/database/schema";
+import { user } from "~~/server/database/schema";
 import { useAuthenticated } from "~~/server/utils/session";
 
 const Promote = type({
@@ -23,11 +23,10 @@ export default defineEventHandler<{ body: typeof Promote.infer }>(
 
     const drizzle = useDrizzle();
     await drizzle
-      .update(users)
+      .update(user)
       .set({ permissionLevel: 999 })
-      .where(eq(users.id, userId));
+      .where(eq(user.id, userId));
 
-    setResponseStatus(h3, 201);
-    return;
+    return "<h1>Promoted.</h1>";
   }
 );

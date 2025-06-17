@@ -1,6 +1,6 @@
 import { type } from "arktype";
 import type { H3Event } from "h3";
-import { users } from "../database/schema";
+import { user } from "../database/schema";
 
 const runtimeConfig = useRuntimeConfig();
 
@@ -20,12 +20,13 @@ export async function useAdminAuthenticated(
   drizzle: ReturnType<typeof useDrizzle>
 ) {
   const userId = await useAuthenticated(h3);
-  const user = await first(
-    drizzle.select().from(users).where(eq(users.id, userId))
+  const fetchedUser = await first(
+    drizzle.select().from(user).where(eq(user.id, userId))
   );
-  if (!user) throw createError({ statusCode: 500 });
+  if (!fetchedUser) throw createError({ statusCode: 500 });
 
-  if (!(user.permissionLevel >= 900)) throw createError({ statusCode: 403 });
+  if (!(fetchedUser.permissionLevel >= 900))
+    throw createError({ statusCode: 403 });
 
   return user;
 }
@@ -52,13 +53,11 @@ export async function usePermissionLevel(
   // -1 means we're not logged in
   let permissionLevel = -1;
   if (userId) {
-    const user = await first(
-      drizzle.select().from(users).where(eq(users.id, userId))
+    const fetchedUser = await first(
+      drizzle.select().from(user).where(eq(user.id, userId))
     );
 
-    if (!user) throw createError({ statusCode: 500 });
-
-    permissionLevel = user?.permissionLevel;
+    if (fetchedUser) permissionLevel = fetchedUser?.permissionLevel;
   }
   return permissionLevel;
 }

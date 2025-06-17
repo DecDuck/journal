@@ -1,5 +1,5 @@
 <template>
-  <Popover v-slot="{ close }" class="isolate z-50 shadow-sm">
+  <Popover v-slot="{ close }" class="isolate z-[1500] shadow-sm">
     <div>
       <PopoverButton
         :class="[
@@ -23,7 +23,7 @@
       leave-to-class="opacity-0 -translate-y-1"
     >
       <PopoverPanel
-        class="absolute inset-x-0 top-16 -z-10 bg-zinc-800 pt-0 shadow-lg ring-1 ring-white/5"
+        class="absolute z-[1500] inset-x-0 top-16 bg-zinc-800 pt-0 shadow-lg ring-1 ring-white/5"
       >
         <div
           class="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 py-10 lg:grid-cols-2 lg:px-8"
@@ -87,7 +87,7 @@
             <article
               v-for="{ post, category } in discoverPosts"
               :key="post.id"
-              class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch"
+              class="group relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch"
             >
               <div>
                 <div class="flex items-center gap-x-4">
@@ -98,17 +98,17 @@
                   >
                   <NuxtLink
                     :href="`/category/${category!.id}`"
-                    class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100"
+                    class="relative z-10 rounded-full bg-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-600"
                     >{{ category!.name }}</NuxtLink
                   >
                 </div>
-                <h4 class="mt-2 text-sm/6 font-semibold text-gray-900">
+                <h4 class="mt-2 text-sm/6 font-semibold text-zinc-300 group-hover:text-zinc-100">
                   <NuxtLink :href="`/post/${post.id}`">
                     <span class="absolute inset-0" />
                     {{ post.title }}
                   </NuxtLink>
                 </h4>
-                <p class="mt-2 text-sm/6 text-gray-600">
+                <p class="mt-2 text-sm/6 text-zinc-400">
                   {{ "todo" }}
                 </p>
               </div>
