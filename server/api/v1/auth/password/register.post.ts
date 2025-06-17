@@ -1,7 +1,6 @@
 import { RegisterForm } from "~~/forms/register";
 import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
 import { users, userSigninMethods } from "~~/server/database/schema";
-import type { User, userSigninMethod } from "~~/server/utils/drizzle";
 import { randomUUID } from "~~/server/utils/uuid";
 import * as jdenticon from "jdenticon";
 import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
@@ -56,7 +55,9 @@ export default defineEventHandler<{
   const userId = randomUUID();
 
   // https://github.com/cloudflare/workers-sdk/issues/5771
-  const avatarBlob = new Blob([jdenticon.toPng(userId, 256)]);
+  const avatarBlob = new Blob([
+    jdenticon.toPng(userId, 256) as unknown as ArrayBuffer,
+  ]);
   const avatar = await blob.put(userId, avatarBlob, {
     prefix: "avatar",
     customMetadata: {
@@ -71,7 +72,7 @@ export default defineEventHandler<{
     displayName: body.displayName,
     username: body.username,
     email: body.email,
-  } satisfies User;
+  } satisfies typeof users.$inferInsert;
 
   const [newUser] = await drizzle.insert(users).values(user).returning();
 
@@ -83,9 +84,11 @@ export default defineEventHandler<{
     userId: newUser.id,
     method: SigninMethod.Password,
     data: JSON.stringify(passwordAuth),
-  } satisfies userSigninMethod;
+  } satisfies typeof userSigninMethods.$inferInsert;
 
   await drizzle.insert(userSigninMethods).values(signinMethod);
+
+  await setResponseStatus(h3, 201);
 
   return;
 });

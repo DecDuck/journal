@@ -68,5 +68,7 @@ export default defineEventHandler<{
 
   await session.update({ userId: user.id });
 
+  await setResponseStatus(h3, 201);
+
   return;
 });

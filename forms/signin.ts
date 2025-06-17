@@ -3,8 +3,8 @@ import { Forminator } from "./_form";
 
 export const SigninForm = Forminator(
   type({
-    usernameEmail: "string",
-    password: "string",
+    usernameEmail: "string > 0",
+    password: "string > 0",
   }),
   {
     usernameEmail: {

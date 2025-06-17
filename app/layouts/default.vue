@@ -170,7 +170,7 @@
               <DisclosureButton
                 v-for="item in userNavigation"
                 :key="item.name"
-                as="a"
+                :as="NuxtLink"
                 :href="item.href"
                 class="block rounded-md px-3 py-2 text-base font-medium text-zinc-400 hover:bg-zinc-700 hover:text-white"
                 >{{ item.name }}</DisclosureButton
@@ -229,7 +229,7 @@ const navigation = computed(() => {
   const nav = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
-    { name: "Topics", href: "/topics" },
+    { name: "Categories", href: "/category" },
     { name: "Create a Post", href: "/create" },
   ];
 
@@ -250,6 +250,9 @@ const navigation = computed(() => {
   return nav.map((e, i) => ({ ...e, current: i == activeIndex }));
 });
 const userNavigation = [
+  ...(user.value?.permissionLevel ?? 0 >= 900
+    ? [{ name: "Admin Dashboard", href: "/admin" }]
+    : []),
   { name: "Your Profile", href: "/profile" },
   { name: "Settings", href: "/settings" },
   { name: "Sign out", href: "/signout" },

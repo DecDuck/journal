@@ -21,7 +21,7 @@
           :name="fieldName"
           :autocomplete="fieldName"
           :placeholder="options.placeholder"
-          required
+          :required="options.default !== undefined"
           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
         />
       </div>
@@ -80,16 +80,27 @@ import { ArkErrors } from "arktype";
 import { FetchError } from "ofetch";
 import type { ForminatorResult } from "~~/forms/_form";
 
+type UnknownObject = { [key: string]: unknown };
+
 const props = defineProps<{
   forminator: ForminatorResult<unknown>;
   endpoint: string;
-  opts?: { method?: "POST" | "PUT" | "PATCH"; submitText?: string };
+  dft?: UnknownObject;
+  opts?: { method?: "POST" | "PUT" | "PATCH"; submitText?: string, extra?: object };
 }>();
 const emit = defineEmits<{
   (e: "submit", value: unknown): void;
 }>();
 
-const result = ref<{ [key: string]: unknown }>({});
+const dft = Object.fromEntries(
+  props.dft
+    ? Object.entries(props.dft).filter((e) => e[1] !== null)
+    : props.forminator.descriptions
+        .filter((e) => e[1].default !== undefined)
+        .map((e) => [e[0], e[1].default])
+);
+
+const result = ref<UnknownObject>(dft);
 
 const validationResult = computed<{ [key: string]: string }>(() => {
   const results = props.forminator.validator(result.value);
@@ -160,7 +171,10 @@ async function submit() {
     result.value[cftokenConst] = turnstileToken.value;
   }
   return await $journalFetch(props.endpoint, {
-    body: result.value,
+    body: {
+      ...result.value,
+      ...props.opts?.extra
+    },
     method: props.opts?.method ?? "POST",
   });
 }

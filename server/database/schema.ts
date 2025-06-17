@@ -12,6 +12,7 @@ export const users = sqliteTable("users", {
   email: text("email").notNull().unique(),
   avatar: text("avatar").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  permissionLevel: integer("permission").notNull().default(0),
 });
 
 export const userSigninMethods = sqliteTable(
@@ -26,6 +27,24 @@ export const userSigninMethods = sqliteTable(
   (table) => [primaryKey({ columns: [table.userId, table.method] })]
 );
 
+export const category = sqliteTable("category", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  readPermission: integer("read").notNull().default(-1), // By default, publicly accessible
+  writePermission: integer("write").notNull().default(0), // By default, requires logged in to write (enforced anyways)
+  repository: text("repository"),
+});
+
+export const topic = sqliteTable("topic", {
+  id: text("id").primaryKey(),
+  categoryId: text("categoryId")
+    .notNull()
+    .references(() => category.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  description: text("description").notNull().default(""),
+});
+
 export const tag = sqliteTable("tag", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -33,6 +52,9 @@ export const tag = sqliteTable("tag", {
 
 export const post = sqliteTable("table", {
   id: text("id").primaryKey(),
+  topicId: text("topicId")
+    .notNull()
+    .references(() => topic.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   content: text("content").notNull(), // Markdown formatted
   tags: text("tags").notNull(), // comma-separated array of tag IDs
@@ -43,7 +65,7 @@ export const reply = sqliteTable("reply", {
   id: text("id").primaryKey(),
   postId: text("postId")
     .notNull()
-    .references(() => post.id),
-  content: text("content").notNull(),
+    .references(() => post.id, { onDelete: "cascade" }),
+  content: text("content").notNull(), // markdown formatted
   attachments: text("attachments").notNull(), // comma-separated array of object IDs
 });

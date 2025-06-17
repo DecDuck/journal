@@ -10,7 +10,7 @@
     <div v-if="props.loading" role="status">
       <svg
         aria-hidden="true"
-        class="w-5 h-5 text-transparent animate-spin fill-white"
+        :class="['w-5 h-5 animate-spin', styles[style].spinner]"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-type Style = "default" | "none";
+type Style = "default" | "none" | "simple-red";
 const props = defineProps<{
   loading: boolean;
   style?: Style;
@@ -41,13 +41,25 @@ const props = defineProps<{
 const style = props.style ?? "default";
 
 const styles: {
-  [key in Style]: { base: string; dft: string; disabled: string };
+  [key in Style]: {
+    base: string;
+    dft: string;
+    disabled: string;
+    spinner: string;
+  };
 } = {
   ["default"]: {
     base: "cursor-pointer inline-flex min-h-9 items-center justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
     dft: "text-white bg-blue-600 hover:bg-blue-500",
     disabled: "text-slate-400 bg-blue-600/10 hover:bg-blue-600/10",
+    spinner: "text-transparent fill-white",
   },
-  ["none"]: { base: "", dft: "", disabled: "" },
+  ["simple-red"]: {
+    base: "cursor-pointer",
+    dft: "text-red-600 hover:text-red-900",
+    disabled: "text-red-600 hover:text-red-600",
+    spinner: "text-transparent fill-red-600",
+  },
+  ["none"]: { base: "", dft: "", disabled: "", spinner: "" },
 };
 </script>

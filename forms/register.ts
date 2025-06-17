@@ -3,11 +3,11 @@ import { Forminator } from "./_form";
 
 export const RegisterForm = Forminator(
   type({
-    displayName: "string",
+    displayName: "string > 0",
     username: "5 <= string.alphanumeric <= 10",
     email: "string.email",
     password: "string >= 14",
-    cftoken: "string",
+    cftoken: "string > 0",
   }),
   {
     displayName: {

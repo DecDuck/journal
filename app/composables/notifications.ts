@@ -16,7 +16,11 @@ export const useNotifications = () =>
 export function createNotification(notification: Omit<NotificationItem, "id">) {
   if (!import.meta.client) return;
   const notifications = useNotifications();
-  notifications.value.push({ ...notification, id: crypto.randomUUID() });
+  const id = crypto.randomUUID();
+  notifications.value.push({ ...notification, id });
+  setTimeout(() => {
+    clearNotification(id);
+  }, 10 * 1000);
 }
 
 export function createErrorNotification(action: string, e: unknown) {

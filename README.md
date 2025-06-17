@@ -7,6 +7,26 @@
 
 Journal is an open-source lightweight forum software designed to run exclusively on Cloudflare's workers, for cheap or free. It was originally built by the Drop OSS team to be used for their project, but was built with alternative whitelabelling options in mind.
 
+## Forum Organisation
+
+Every forum likes to organise posts in their own way. This is how Journal does it:
+
+### Top level: Category
+
+Categories are associated with a single purpose or project. They are also the only organisation structure with permission control for viewing and posting. They can also integrate with a GitHub repository to convert forum threads into issues.
+
+### Second level: Topic
+
+Each category has a series of topics. These are generally correlated to certain features, or something general like "support".
+
+### Final level: Post/thread
+
+Post and thread are used interchangably - it is a single, source post, and then a series of replies.
+
+### Bonus level: Tags
+
+Tags are global, and don't fit into the hierarchy. Tags can be applied at the post level, but between any category and topic.
+
 ## Tech Stack
 
 Because of the technical constraints of Cloudflare's workers, we are forced to use this particular stack:

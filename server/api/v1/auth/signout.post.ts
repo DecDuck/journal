@@ -8,5 +8,7 @@ export default defineEventHandler(async (h3) => {
 
   await session.clear();
 
+  await setResponseStatus(h3, 201);
+
   return;
 });

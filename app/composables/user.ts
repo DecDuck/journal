@@ -11,7 +11,7 @@ export const useUser = () =>
 export async function updateUser() {
   const user = useUser();
   try {
-    const freshUser = await $journalFetch("/api/v1/user");
+    const freshUser = await $journalFetch("/api/v1/auth/user");
     user.value = freshUser;
   } catch (e) {
     if (e instanceof FetchError) {

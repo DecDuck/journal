@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     },
     sessionSecret: "superdupersecretsuperuduperpdasudij",
     turnstileSecret: "1x0000000000000000000000000000000AA",
+    adminToken: "whatanadmintoken",
   },
 
   vite: { plugins: [tailwindcss()] },
