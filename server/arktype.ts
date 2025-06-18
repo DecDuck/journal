@@ -111,8 +111,7 @@ export async function readJournalValidatedMultipart<T>(
       throw createError({ statusCode: 500, statusMessage: "..." });
     // This is a file, and we should upload it.
     const data = new Blob([part.data as unknown as ArrayBuffer]);
-    const obj = await blob.put(part.filename, data, {
-      addRandomSuffix: true,
+    const obj = await blob.put(randomUUID(40), data, {
       prefix: "user-uploads",
       customMetadata: {
         filename: part.filename,

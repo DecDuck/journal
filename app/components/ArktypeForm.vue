@@ -241,6 +241,8 @@ function submit_wrapper() {
   submit()
     .then(
       (e) => {
+        result.value = dft;
+
         emit("submit", e);
       },
       (e) => {

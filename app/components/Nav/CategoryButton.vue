@@ -1,5 +1,5 @@
 <template>
-  <Popover v-slot="{ close }" class="isolate z-[1500] shadow-sm">
+  <Popover ref="popover" v-slot="{ close }" class="isolate z-[1500] shadow-sm">
     <div>
       <PopoverButton
         :class="[
@@ -23,7 +23,7 @@
       leave-to-class="opacity-0 -translate-y-1"
     >
       <PopoverPanel
-        class="absolute z-[1500] inset-x-0 top-16 bg-zinc-800 pt-0 shadow-lg ring-1 ring-white/5"
+        class="absolute inset-x-0 top-16 bg-zinc-800 pt-0 shadow-lg ring-1 ring-white/5"
       >
         <div
           class="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 py-10 lg:grid-cols-2 lg:px-8"
@@ -85,32 +85,40 @@
           >
             <h3 class="sr-only">Recent posts</h3>
             <article
-              v-for="{ post, category } in discoverPosts"
+              v-for="{ post, user } in discoverPosts"
               :key="post.id"
               class="group relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch"
             >
               <div>
+                <div class="inline-flex items-center gap-x-2">
+                  <div class="flex items-center gap-x-1">
+                  <img
+                    :src="useObject(user!.avatar)"
+                    class="size-5 rounded-full"
+                  />
+                  <p class="text-sm text-zinc-300">{{ user!.displayName }}</p>
+                </div>
+                <div class="size-[3px] bg-zinc-500 rounded-full" />
                 <div class="flex items-center gap-x-4">
                   <time
                     :datetime="post.createdAt"
-                    class="text-sm/6 text-gray-600"
-                    >{{ post.createdAt }}</time
-                  >
-                  <NuxtLink
-                    :href="`/category/${category!.id}`"
-                    class="relative z-10 rounded-full bg-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-600"
-                    >{{ category!.name }}</NuxtLink
+                    class="text-sm/6 text-zinc-400"
+                    >{{ relativeTime(post.createdAt) }}</time
                   >
                 </div>
-                <h4 class="mt-2 text-sm/6 font-semibold text-zinc-300 group-hover:text-zinc-100">
-                  <NuxtLink :href="`/post/${post.id}`">
+                </div>
+                
+                <h4
+                  class="mt-1 text-md font-semibold text-zinc-300 group-hover:text-zinc-100"
+                >
+                  <NuxtLink
+                    :href="`/post/${post.id}`"
+                    @click.prevent="() => close()"
+                  >
                     <span class="absolute inset-0" />
                     {{ post.title }}
                   </NuxtLink>
                 </h4>
-                <p class="mt-2 text-sm/6 text-zinc-400">
-                  {{ "todo" }}
-                </p>
               </div>
             </article>
           </div>
@@ -124,9 +132,12 @@
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from "#components";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import { GlobeAltIcon, PaperClipIcon } from "@heroicons/vue/24/outline";
+
+const router = useRouter();
 
 const categories = await useCategories();
 
@@ -135,4 +146,13 @@ const discoverTopics = await $journalFetch("/api/v1/discover/topic?limit=8");
 const discoverPosts = await $journalFetch("/api/v1/discover/post?limit=4");
 
 const props = defineProps<{ current: boolean }>();
+
+const popover = useTemplateRef<InstanceType<typeof Popover>>("popover");
+
+router.afterEach(() => {
+  // This works. Don't touch.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  popover.value?.$props.close();
+});
 </script>

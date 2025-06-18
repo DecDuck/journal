@@ -13,7 +13,7 @@
   <div class="mt-8 py-4 border-t border-zinc-200">
     <div
       v-if="props.attachments && props.attachments.length > 0"
-      class="grid grid-cols-4 gap-2"
+      class="flex flex-row flex-wrap gap-2"
     >
       <FileWidget
         v-for="file in attachments"

@@ -44,23 +44,48 @@
       </div>
     </div>
 
-    <article class="flex gap-4">
-      <div class="flex flex-col items-center">
-        <img
-          :src="useObject(author.avatar)"
-          class="ring-[2px] p-1 ring-zinc-200 size-12 rounded-full"
-        />
-        <div class="w-[2px] bg-zinc-200 h-full" />
-        <div class="size-3 aspect-square rounded-full bg-zinc-200" />
+    <div class="flex gap-4 lg:px-4">
+      <div class="flex-1 w-full space-y-8">
+        <article class="flex gap-3 lg:gap-4">
+          <div class="flex flex-col items-center">
+            <img
+              :src="useObject(author.avatar)"
+              class="ring-[2px] lg:p-1 ring-zinc-200 size-6 lg:size-12 rounded-full"
+            />
+            <div class="w-[2px] bg-zinc-200 h-full" />
+            <div class="size-3 aspect-square rounded-full bg-zinc-200" />
+          </div>
+          <div class="flex-1 w-full">
+            <PostReplyContent
+              :author="author"
+              :content="content"
+              :attachments="attachments"
+            />
+          </div>
+        </article>
+
+        <article v-for="reply in replies" :key="reply.id" class="flex gap-4">
+          <div class="flex flex-col items-center">
+            <img
+              :src="useObject(reply.author.avatar)"
+              class="ring-[2px] p-1 ring-zinc-200 size-12 rounded-full"
+            />
+            <div class="w-[2px] bg-zinc-200 h-full" />
+            <div class="size-3 aspect-square rounded-full bg-zinc-200" />
+          </div>
+          <div class="flex-1 w-full">
+            <PostReplyContent
+              :author="reply.author"
+              :content="reply.content"
+              :attachments="reply.attachments"
+            />
+            <span class="text-xs text-zinc-400">{{
+              relativeTime(reply.createdAt)
+            }}</span>
+          </div>
+        </article>
       </div>
-      <div class="flex-1 w-full">
-        <PostReplyContent
-          :author="author"
-          :content="content"
-          :attachments="attachments"
-        />
-      </div>
-      <div>
+      <div class="hidden lg:block">
         <ul role="list" class="space-y-6">
           <li
             v-for="(activityItem, activityItemIdx) in activity"
@@ -104,38 +129,25 @@
           </li>
         </ul>
       </div>
-    </article>
-
-    <div class="space-y-8">
-      <article v-for="reply in replies" :key="reply.id" class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <img
-            :src="useObject(reply.author.avatar)"
-            class="ring-[2px] p-1 ring-zinc-200 size-12 rounded-full"
-          />
-          <div class="w-[2px] bg-zinc-200 h-full" />
-          <div class="size-3 aspect-square rounded-full bg-zinc-200" />
-        </div>
-        <div class="flex-1 w-full">
-          <PostReplyContent
-            :author="reply.author"
-            :content="reply.content"
-            :attachments="reply.attachments"
-          />
-          <span class="text-xs text-zinc-400">{{
-            relativeTime(reply.createdAt)
-          }}</span>
-        </div>
-      </article>
     </div>
 
-    <div v-if="user" class="max-w-sm">
+    <div v-if="user" class="max-w-lg">
       <ArktypeForm
         :forminator="ReplyForm"
         endpoint="/api/v1/reply"
         :opts="{ submitText: 'Reply', extra: { postId: post.id } }"
         @submit="(reply) => onReply(reply)"
       />
+    </div>
+    <div v-else class="shadow-sm p-4 rounded-lg text-sm bg-zinc-50">
+      <p>
+        <NuxtLink
+          href="/signin"
+          class="text-blue-600 hover:underline hover:text-blue-500"
+          >Sign in &rarr;</NuxtLink
+        >
+        to reply to this conversation.
+      </p>
     </div>
   </div>
 </template>
@@ -156,8 +168,11 @@ const {
 } = await $journalFetch("/api/v1/post", {
   query: { id: route.params.id },
 });
-
 const replies = ref(rawReplies);
+
+useHead({
+  title: post.title,
+});
 
 const user = useUser();
 

@@ -1,5 +1,5 @@
 import { ArkErrors, type } from "arktype";
-import { desc, lte } from "drizzle-orm";
+import { asc, lte } from "drizzle-orm";
 import { category, post, reply, user } from "~~/server/database/schema";
 import { mapAttachments } from "~~/server/utils/blob";
 
@@ -39,7 +39,7 @@ export default defineEventHandler(async (h3) => {
     .select()
     .from(reply)
     .where(eq(reply.postId, fetchedPost.post.id))
-    .orderBy(desc(reply.createdAt))
+    .orderBy(asc(reply.createdAt))
     .innerJoin(user, eq(reply.authorId, user.id));
 
   const attachmentMetadata = await mapAttachments(

@@ -38,7 +38,7 @@ export default defineEventHandler(async (h3) => {
       .where(
         and(
           eq(post.id, body.postId),
-          lte(category.writePermission, permissionLevel)
+          lte(category.readPermission, permissionLevel)
         )
       )
       .innerJoin(category, eq(category.id, post.categoryId))

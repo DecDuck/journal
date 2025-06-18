@@ -7,8 +7,16 @@
     <body class="h-full">
     ```
   -->
-  <div class="min-h-full">
-    <div class="bg-zinc-900 pb-32">
+  <div class="min-h-full flex flex-col flex-col-reverse">
+    <main>
+      <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 py-4">
+        <div class="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6">
+          <slot />
+        </div>
+      </div>
+    </main>
+
+    <div class="bg-zinc-900">
       <Disclosure v-slot="{ open }" as="nav" class="bg-zinc-800">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div class="border-b border-zinc-700">
@@ -202,14 +210,6 @@
         </DisclosurePanel>
       </Disclosure>
     </div>
-
-    <main class="-mt-16">
-      <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-        <div class="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6">
-          <slot />
-        </div>
-      </div>
-    </main>
   </div>
 </template>
 
@@ -243,7 +243,8 @@ const navigation = computed(() => {
     { name: "New Post", href: "/new" },
   ];
 
-  const [_, activeIndex] = nav.reduce(
+  // eslint-disable-next-line prefer-const
+  let [_, activeIndex] = nav.reduce(
     (prev, current, index) => {
       if (route.fullPath.startsWith(current.href)) {
         const length = current.href.length;
@@ -256,15 +257,18 @@ const navigation = computed(() => {
     // Length, index
     [-1, -1]
   );
+  if (activeIndex == 0 && route.path.length > 1) {
+    activeIndex = -1;
+  }
 
   return nav.map((e, i) => ({ ...e, current: i == activeIndex }));
 });
-const userNavigation = [
+const userNavigation = computed(() => [
   ...(user.value?.permissionLevel ?? 0 >= 900
     ? [{ name: "Admin Dashboard", href: "/admin" }]
     : []),
-  { name: "Your Profile", href: "/profile" },
-  { name: "Settings", href: "/settings" },
+  { name: "Your Profile", href: `/user/${user.value?.id}` },
+  { name: "Settings", href: "/profile" },
   { name: "Sign out", href: "/signout" },
-];
+]);
 </script>

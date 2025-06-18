@@ -1,6 +1,6 @@
 import { type } from "arktype";
 import { lte } from "drizzle-orm";
-import { category, post, topic } from "~~/server/database/schema";
+import { category, post, topic, user } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
 
 const DiscoverPosts = type({
@@ -20,9 +20,9 @@ export default defineEventHandler(async (h3) => {
     .select()
     .from(post)
     .where(lte(category.readPermission, permissionLevel))
-
     .leftJoin(topic, eq(post.topicId, topic.id))
     .leftJoin(category, eq(topic.categoryId, category.id))
+    .leftJoin(user, eq(post.authorId, user.id))
     .limit(limit);
 
   return posts;

@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-type Style = "default" | "none" | "simple-red";
+type Style = "default" | "none" | "simple-red" | "pagination";
 const props = defineProps<{
   loading: boolean;
   style?: Style;
@@ -59,6 +59,12 @@ const styles: {
     dft: "text-red-600 hover:text-red-900",
     disabled: "text-red-600 hover:text-red-600",
     spinner: "text-transparent fill-red-600",
+  },
+  ["pagination"]: {
+    base: "relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset focus:z-20 focus:outline-offset-0",
+    dft: "cursor-pointer hover:bg-gray-50",
+    disabled: "bg-gray-200",
+    spinner: "text-transparent text-zinc-400",
   },
   ["none"]: { base: "", dft: "", disabled: "", spinner: "" },
 };

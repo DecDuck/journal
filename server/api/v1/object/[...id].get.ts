@@ -24,7 +24,8 @@ export default defineEventHandler(async (h3) => {
 
   const filename = head.customMetadata.filename;
   if(head.pathname.startsWith("user-uploads") && filename){
-    setHeader(h3, "Content-Disposition", `attachment; ${filename}`)
+    console.log(filename);
+    setHeader(h3, "Content-Disposition", `attachment; filename=${filename}`)
   }
 
   return await blob.serve(h3, id);
