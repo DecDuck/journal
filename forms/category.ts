@@ -7,6 +7,7 @@ export const CategoryForm = Forminator(
     description: "string > 0",
     readPermission: "number = -1",
     writePermission: "number = 0",
+    adminPermission: "number = 900",
     repository: "string?",
   }),
   {
@@ -36,6 +37,14 @@ export const CategoryForm = Forminator(
       type: "number",
       placeholder: "0",
       default: 0,
+    },
+    adminPermission: {
+      name: "Admin Permission",
+      type: "number",
+      placeholder: "900",
+      default: 900,
+      description:
+        "Permission level required to delete and edit other posts in this category. ",
     },
     repository: {
       name: "GitHub repository",

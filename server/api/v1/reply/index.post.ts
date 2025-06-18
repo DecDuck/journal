@@ -1,18 +1,17 @@
 import type { Type } from "arktype";
 import { lte } from "drizzle-orm";
-import { PostForm } from "~~/forms/post";
+import { ReplyForm } from "~~/forms/reply";
 import {
   readJournalValidatedMultipart,
   throwingArktype,
 } from "~~/server/arktype";
-import { category, post, topic } from "~~/server/database/schema";
+import { category, post, reply } from "~~/server/database/schema";
 
-const CreatePostValidator = (
-  PostForm.validator as Type<typeof PostForm.validator.infer>
+const CreateReplyValidator = (
+  ReplyForm.validator as Type<typeof ReplyForm.validator.infer>
 )
   .and({
-    categoryId: "string",
-    topicId: "string",
+    postId: "string",
   })
   .configure(throwingArktype);
 
@@ -29,48 +28,45 @@ export default defineEventHandler(async (h3) => {
 
   const { body, files } = await readJournalValidatedMultipart(
     h3,
-    CreatePostValidator
+    CreateReplyValidator
   );
 
-  const postCategory = await first(
+  const replyPost = await first(
     drizzle
       .select()
-      .from(category)
+      .from(post)
       .where(
         and(
-          eq(category.id, body.categoryId),
+          eq(post.id, body.postId),
           lte(category.writePermission, permissionLevel)
         )
       )
+      .innerJoin(category, eq(category.id, post.categoryId))
   );
-  if (!postCategory)
-    throw createError({ statusCode: 404, statusMessage: "Unknown category." });
-
-  const postTopic = await first(
-    drizzle.select().from(topic).where(eq(topic.id, body.topicId))
-  );
-  if (!postTopic)
-    throw createError({ statusCode: 404, statusMessage: "Unknown topic." });
+  if (!replyPost)
+    throw createError({ statusCode: 404, statusMessage: "Unknown post." });
 
   const newPost = {
     id: randomUUID(20),
-    title: body.title,
     content: body.content,
-    tags: body.tags.join(","),
     attachments: files.attachments?.map((e) => e.pathname).join(",") ?? "",
-    topicId: postTopic.id,
-    categoryId: postCategory.id,
     authorId: userId,
-  } satisfies typeof post.$inferInsert;
+    postId: body.postId,
+  } satisfies typeof reply.$inferInsert;
 
-  const newlyCreatedPost = await first(
-    drizzle.insert(post).values(newPost).returning()
+  const newlyCreatedReply = await first(
+    drizzle.insert(reply).values(newPost).returning()
   );
-  if (!newlyCreatedPost)
+  if (!newlyCreatedReply)
     throw createError({
       statusCode: 500,
       statusMessage: "Failed to create post",
     });
 
-  return newlyCreatedPost;
+  return {
+    ...newlyCreatedReply,
+    attachments: await mapAttachments(
+      newlyCreatedReply.attachments?.split(",") ?? []
+    ),
+  };
 });

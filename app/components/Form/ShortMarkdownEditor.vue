@@ -1,39 +1,45 @@
 <!-- eslint-disable vue/no-v-html -->
-<!-- stolen from the Drop OSS project lol -->
+<!-- stolen from me lol -->
 <template>
   <div class="mt-1 flex flex-col gap-4">
-    <!-- Markdown shortcuts -->
-    <div class="flex flex-wrap gap-2">
-      <button
-        v-for="shortcut in markdownShortcuts"
-        :key="shortcut.label"
-        type="button"
-        class="cursor-pointer px-2 py-1 text-sm rounded bg-zinc-100 text-zinc-900 hover:bg-zinc-300 transition-colors"
-        @click="applyMarkdown(shortcut)"
+    <SwitchGroup as="div" class="flex items-center">
+      <Switch
+        v-model="viewing"
+        :class="[
+          viewing ? 'bg-blue-600' : 'bg-gray-200',
+          'relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-hidden',
+        ]"
       >
-        {{ shortcut.label }}
-      </button>
-    </div>
-
-    <div class="grid grid-rows-2 sm:grid-cols-2 sm:grid-rows-1 gap-4 h-[400px]">
+        <span
+          aria-hidden="true"
+          :class="[
+            viewing ? 'translate-x-3' : 'translate-x-0',
+            'pointer-events-none inline-block size-3 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out',
+          ]"
+        />
+      </Switch>
+      <SwitchLabel as="span" class="ml-3 text-sm font-medium text-gray-900">
+        {{ viewing ? "Preview" : "Edit" }}
+      </SwitchLabel>
+    </SwitchGroup>
+    <div class="h-[100px]">
       <!-- Editor -->
-      <div class="flex flex-col">
-        <span class="text-sm text-zinc-500 mb-2">Editor</span>
+      <div v-if="!viewing" class="flex flex-col h-full">
         <textarea
           id="content"
           ref="contentEditor"
           v-model="model"
-          class="flex-1 px-2 py-1 rounded-md bg-white border border-zinc-300 text-zinc-900 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
+          placeholder="Edit..."
+          class="flex-1 px-2 py-1 rounded-md bg-zinc-50 border border-zinc-300 text-zinc-900 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
           required
           @keydown="handleContentKeydown"
         />
       </div>
 
       <!-- Preview -->
-      <div class="flex flex-col">
-        <span class="text-sm text-zinc-500 mb-2">Preview</span>
+      <div v-else class="flex flex-col h-full">
         <div
-          class="flex-1 p-4 rounded-md bg-white border border-zinc-300 overflow-y-auto"
+          class="flex-1 px-2 py-1 rounded-md bg-white border border-zinc-300 overflow-y-auto"
         >
           <div
             class="prose prose-blue prose-sm h-full overflow-y-auto"
@@ -46,6 +52,7 @@
 </template>
 
 <script setup lang="ts">
+import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 import { micromark } from "micromark";
 
 const model = defineModel<string>();
@@ -57,45 +64,7 @@ const markdownPreview = computed(() => {
 });
 
 const contentEditor = ref<HTMLTextAreaElement>();
-
-const markdownShortcuts = [
-  {
-    label: "Bold",
-    prefix: "**",
-    suffix: "**",
-    placeholder: "bolded",
-  },
-  {
-    label: "Italics",
-    prefix: "_",
-    suffix: "_",
-    placeholder: "italicised",
-  },
-  {
-    label: "URL",
-    prefix: "[",
-    suffix: "](url)",
-    placeholder: "https://example.com",
-  },
-  {
-    label: "Code Block",
-    prefix: "`",
-    suffix: "`",
-    placeholder: 'console.log("Hello World");',
-  },
-  {
-    label: "List",
-    prefix: "- ",
-    suffix: "",
-    placeholder: "a list item",
-  },
-  {
-    label: "Heading 2",
-    prefix: "## ",
-    suffix: "",
-    placeholder: "Heading 2",
-  },
-];
+const viewing = ref(false);
 
 function handleContentKeydown(e: KeyboardEvent) {
   if (e.key === "Enter") {
@@ -137,34 +106,6 @@ function handleContentKeydown(e: KeyboardEvent) {
         start + insertion.length;
     });
   }
-}
-
-function applyMarkdown(shortcut: (typeof markdownShortcuts)[0]) {
-  const textarea = contentEditor.value;
-  if (!textarea) return;
-
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const text = textarea.value;
-
-  const selectedText = text.substring(start, end);
-  const replacement = selectedText || shortcut.placeholder;
-
-  const newText =
-    text.substring(0, start) +
-    shortcut.prefix +
-    replacement +
-    shortcut.suffix +
-    text.substring(end);
-
-  model.value = newText;
-
-  nextTick(() => {
-    textarea.focus();
-    const newStart = start + shortcut.prefix.length;
-    const newEnd = newStart + replacement.length;
-    textarea.setSelectionRange(newStart, newEnd);
-  });
 }
 </script>
 

@@ -1,6 +1,7 @@
 import { ArkErrors, type } from "arktype";
 import { desc, lte } from "drizzle-orm";
 import { category, post, reply, user } from "~~/server/database/schema";
+import { mapAttachments } from "~~/server/utils/blob";
 
 export const FetchPost = type({
   id: "string",
@@ -38,7 +39,31 @@ export default defineEventHandler(async (h3) => {
     .select()
     .from(reply)
     .where(eq(reply.postId, fetchedPost.post.id))
-    .orderBy(desc(reply.createdAt));
+    .orderBy(desc(reply.createdAt))
+    .innerJoin(user, eq(reply.authorId, user.id));
 
-  return { post: fetchedPost.post, replies, author: fetchedPost.user };
+  const attachmentMetadata = await mapAttachments(
+    fetchedPost.post.attachments?.split(",") ?? []
+  );
+
+  const mappedReplies = await Promise.all(
+    replies.map(async (e) => {
+      const attachments = e.reply.attachments?.split(",") ?? [];
+
+      const attachmentMetadata = await mapAttachments(attachments);
+
+      return {
+        ...e.reply,
+        author: e.user,
+        attachments: attachmentMetadata,
+      };
+    })
+  );
+
+  return {
+    post: fetchedPost.post,
+    replies: mappedReplies,
+    author: fetchedPost.user,
+    attachments: attachmentMetadata,
+  };
 });

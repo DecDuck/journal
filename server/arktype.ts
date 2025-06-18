@@ -64,7 +64,7 @@ export async function readJournalValidatedMultipart<T>(
     });
 
   const delayedParts: Array<(typeof body)[0]> = [];
-  const files: { [key: string]: Array<BlobObject> } = {};
+  const files: { [key: string]: Array<BlobObject> | undefined } = {};
   const objectBody: { [key: string]: unknown } = {};
 
   const blob = hubBlob();
@@ -121,7 +121,7 @@ export async function readJournalValidatedMultipart<T>(
     });
 
     files[part.name] ??= [];
-    files[part.name].push(obj);
+    files[part.name]!.push(obj);
   }
 
   return { body: validBody, files };

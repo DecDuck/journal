@@ -91,11 +91,13 @@ import type { ForminatorResult } from "~~/forms/_form";
 import MarkdownEditor from "./Form/MarkdownEditor.vue";
 import TagEditor from "./Form/TagEditor.vue";
 import AttachmentsEditor from "./Form/AttachmentsEditor.vue";
+import ShortMarkdownEditor from "./Form/ShortMarkdownEditor.vue";
 
 type UnknownObject = { [key: string]: unknown };
 
 const specialEditors: { [key: string]: Component } = {
   markdown: MarkdownEditor,
+  shortMarkdown: ShortMarkdownEditor,
   tags: TagEditor,
   attachments: AttachmentsEditor,
 };
@@ -217,7 +219,8 @@ async function submit() {
     }
 
     for (const [field] of attachmentFields) {
-      const files = result.value[field] as File[];
+      const files = result.value[field] as File[] | undefined;
+      if (!files) continue;
       for (const file of files) {
         newBody.append(field, file);
       }

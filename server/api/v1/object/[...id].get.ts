@@ -21,5 +21,11 @@ export default defineEventHandler(async (h3) => {
     throw createError({ statusCode: 404 });
 
   setHeader(h3, "Content-Security-Policy", "default-src 'none';");
+
+  const filename = head.customMetadata.filename;
+  if(head.pathname.startsWith("user-uploads") && filename){
+    setHeader(h3, "Content-Disposition", `attachment; ${filename}`)
+  }
+
   return await blob.serve(h3, id);
 });

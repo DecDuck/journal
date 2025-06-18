@@ -1,0 +1,1 @@
+ALTER TABLE `reply` ADD `authorId` text NOT NULL REFERENCES user(id);

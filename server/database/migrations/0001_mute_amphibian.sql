@@ -1,0 +1,1 @@
+ALTER TABLE `category` ADD `admin` integer DEFAULT 900 NOT NULL;

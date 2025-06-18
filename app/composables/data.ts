@@ -1,5 +1,8 @@
 import type { SerializeObject } from "nitropack";
 import type { Category, Tag, Topic } from "~~/server/utils/drizzle";
+import { DateTime } from "luxon";
+
+export type FileAttachment = { type: string; filename: string; size: number };
 
 export const useCategories = async () => {
   // Not particularly typesafe but we need a way to check if it hasn't been initialised
@@ -43,3 +46,9 @@ export const useTopics = async (id: string) => {
   }
   return computed(() => state.value[id]!);
 };
+
+export function relativeTime(time: string | Date) {
+  const jsDate = typeof time === "string" ? new Date(time) : time;
+  const datetime = DateTime.fromJSDate(jsDate);
+  return datetime.toRelative()!;
+}

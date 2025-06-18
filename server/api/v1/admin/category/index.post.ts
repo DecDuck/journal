@@ -19,6 +19,7 @@ export default defineEventHandler(async (h3) => {
     description: body.description,
     readPermission: body.readPermission,
     writePermission: body.writePermission,
+    adminPermission: body.adminPermission,
     repository: body.repository,
   } satisfies typeof category.$inferInsert;
 

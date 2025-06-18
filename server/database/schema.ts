@@ -33,6 +33,7 @@ export const category = sqliteTable("category", {
   description: text("description").notNull(),
   readPermission: integer("read").notNull().default(-1), // By default, publicly accessible
   writePermission: integer("write").notNull().default(0), // By default, requires logged in to write (enforced anyways)
+  adminPermission: integer("admin").notNull().default(900),
   repository: text("repository"),
 });
 
@@ -67,7 +68,7 @@ export const post = sqliteTable("post", {
   title: text("title").notNull(),
   content: text("content").notNull(), // Markdown formatted
   tags: text("tags").notNull(), // comma-separated array of tag IDs
-  attachments: text("attachments").notNull(), // comma-separated array of object IDs
+  attachments: text("attachments"), // comma-separated array of object IDs
 });
 
 export const reply = sqliteTable("reply", {
@@ -79,5 +80,8 @@ export const reply = sqliteTable("reply", {
   createdAt: integer("createdAt", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
-  attachments: text("attachments").notNull(), // comma-separated array of object IDs
+  attachments: text("attachments"), // comma-separated array of object IDs
+  authorId: text("authorId")
+    .notNull()
+    .references(() => user.id),
 });
