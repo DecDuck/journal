@@ -1,0 +1,42 @@
+import { type } from "arktype";
+import { count, desc, like, lte } from "drizzle-orm";
+import { category, post, topic } from "~~/server/database/schema";
+
+const SearchQuery = type({
+  q: "string",
+});
+
+export default definePaginatedEndpoint(
+  SearchQuery,
+  async (drizzle, options, permissions, offset, limit) => {
+    const likeStr = `%${options.q.toLowerCase()}%`;
+
+    const query = and(
+      or(
+        like(sql`lower(${post.title})`, likeStr),
+        like(sql`lower(${post.content})`, likeStr)
+      ),
+      lte(category.readPermission, permissions)
+    );
+
+    const posts = await drizzle
+      .select()
+      .from(post)
+      .where(query)
+      .innerJoin(category, eq(post.categoryId, category.id))
+      .innerJoin(topic, eq(post.topicId, topic.id))
+      .orderBy(desc(post.createdAt))
+      .offset(offset)
+      .limit(limit);
+
+    const postCount = await first(
+      drizzle
+        .select({ count: count() })
+        .from(post)
+        .where(query)
+        .innerJoin(category, eq(post.categoryId, category.id))
+    );
+
+    return { results: posts, count: postCount!.count };
+  }
+);

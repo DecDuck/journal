@@ -28,7 +28,7 @@ export function definePaginatedEndpoint<T extends object, V>(
         statusMessage: paginationQuery.summary,
       });
 
-    const pageSize = parseInt(paginationQuery.count ?? "0");
+    const pageSize = parseInt(paginationQuery.count ?? "10");
     const offset = parseInt(paginationQuery.page ?? "0") * pageSize;
     if (Number.isNaN(pageSize) || Number.isNaN(offset))
       throw createError({

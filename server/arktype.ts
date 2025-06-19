@@ -84,7 +84,7 @@ export async function readJournalValidatedMultipart<T>(
     } catch {
       throw createError({
         statusCode: 400,
-        statusMessage: "Data must be string-encoded JSON objects.",
+        statusMessage: `Data must be string-encoded JSON objects. (${part.name})`,
       });
     }
   }
@@ -97,7 +97,7 @@ export async function readJournalValidatedMultipart<T>(
     if (e instanceof ArkErrors) {
       throw createError({
         statusCode: 400,
-        statusMessage: e.summary,
+        message: e.summary,
       });
     }
     throw createError({

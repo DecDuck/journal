@@ -1,5 +1,5 @@
 import { type } from "arktype";
-import { lte } from "drizzle-orm";
+import { desc, lte } from "drizzle-orm";
 import { category, post, topic, user } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
 
@@ -23,6 +23,7 @@ export default defineEventHandler(async (h3) => {
     .leftJoin(topic, eq(post.topicId, topic.id))
     .leftJoin(category, eq(topic.categoryId, category.id))
     .leftJoin(user, eq(post.authorId, user.id))
+    .orderBy(desc(post.createdAt))
     .limit(limit);
 
   return posts;

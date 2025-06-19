@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
   <div>
     <div>
@@ -43,70 +42,17 @@
         endpoint="/api/v1/user/posts"
         :opts="{ id: user.id }"
       >
-        <div v-if="!data">
-          {{ data }}
+        <div v-if="!data?.results" class="min-h-[30rem] flex items-center justify-center">
+          <p class="text-sm text-zinc-400 animate-pulse">Loading...</p>
         </div>
         <div v-else class="py-3 space-y-2">
-          <article
+          <PostPreviewWidget
             v-for="{post, category, topic} in (data.results as Array<{post: SerializeObject<Post>, category: SerializeObject<Category>, topic: SerializeObject<Topic>}>)"
             :key="post.id"
-            class="relative group cursor-pointer shadow-sm px-4 py-3 rounded"
-          >
-            <div class="flex flex-wrap items-center gap-x-3">
-              <h1
-                class="text-lg font-semibold text-zinc-900 group-hover:text-zinc-500"
-              >
-                {{ post.title }}
-              </h1>
-              <p class="text-sm text-zinc-400">
-                {{ relativeTime(post.createdAt) }}
-              </p>
-            </div>
-            <div class="py-1">
-              <nav class="flex" aria-label="Breadcrumb">
-                <ol role="list" class="flex items-center space-x-1">
-                  <li>
-                    <div class="text-gray-400 hover:text-gray-500">
-                      <HomeIcon class="size-4 shrink-0" aria-hidden="true" />
-                      <span class="sr-only">Home</span>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex items-center">
-                      <ChevronRightIcon
-                        class="size-4 shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <div class="ml-1 text-sm font-medium text-gray-500">
-                        {{ category.name }}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex items-center">
-                      <ChevronRightIcon
-                        class="size-4 shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <div class="ml-1 text-sm font-medium text-gray-500">
-                        {{ topic.name }}
-                      </div>
-                    </div>
-                  </li>
-                </ol>
-              </nav>
-            </div>
-            <div class="overflow-hidden relative max-h-[11rem]">
-              <div
-                class="prose prose-sm prose-blue"
-                v-html="micromark(post.content)"
-              />
-              <div
-                class="absolute inset-0 bg-linear-to-b from-transparent to-white"
-              />
-            </div>
-            <NuxtLink class="absolute inset-0" :href="`/post/${post.id}`" />
-          </article>
+            :post="post"
+            :category="category"
+            :topic="topic"
+          />
         </div>
       </PaginatedContent>
     </div>
@@ -116,8 +62,6 @@
 <script setup lang="ts">
 import type { SerializeObject } from "nitropack";
 import type { Category, Post, Topic } from "~~/server/utils/drizzle";
-import { micromark } from "micromark";
-import { ChevronRightIcon, HomeIcon } from "@heroicons/vue/24/outline";
 
 const route = useRoute();
 const userId = route.params.id;
