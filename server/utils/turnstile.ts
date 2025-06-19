@@ -1,3 +1,5 @@
+import { FetchError } from "ofetch";
+
 export async function validateTurnstile(token: string) {
   const runtimeConfig = useRuntimeConfig();
 
@@ -14,7 +16,8 @@ export async function validateTurnstile(token: string) {
     );
     return result.success;
   } catch (e) {
-    console.warn(e);
+    const error = e as FetchError;
+    console.warn(error, error.data);
     return false;
   }
 }
