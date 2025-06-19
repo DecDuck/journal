@@ -68,8 +68,6 @@
       <div ref="turnstile" />
     </div>
 
-    {{ validationResult }}
-
     <div>
       <LoadingButton
         :loading="formLoading"
