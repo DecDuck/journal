@@ -1,5 +1,4 @@
-import "~~/server/arktype";
-import { type } from "arktype";
+import { type } from "~~/server/arktype";
 import { desc, lte } from "drizzle-orm";
 import { category, post, topic, user } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
