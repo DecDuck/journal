@@ -94,5 +94,8 @@ export function throwyZod<T>(input: ZodSafeParseResult<T>) {
     return input.data;
   }
 
-  throw createError({ statusCode: 400, message: input.error!.message });
+  throw createError({
+    statusCode: 400,
+    message: input.error?.message ?? "Invalid form.",
+  });
 }
