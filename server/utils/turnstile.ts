@@ -1,13 +1,14 @@
 export async function validateTurnstile(token: string) {
   const runtimeConfig = useRuntimeConfig();
+
+  const formData = new FormData();
+  formData.append("secret", runtimeConfig.turnstileSecret);
+  formData.append("response", token);
   try {
     const result = await $fetch<{ success: boolean }>(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
-        body: {
-          secret: runtimeConfig.turnstileSecret,
-          response: token,
-        },
+        body: formData,
         method: "POST",
       }
     );
