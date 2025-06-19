@@ -1,15 +1,12 @@
-import type { Type } from "arktype";
-import { type } from "arktype";
 import { TopicForm } from "~~/forms/topic";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
+import { readJournalValidatedBody } from "~~/server/validation";
 import { topic } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
+import { z } from "zod/v4";
 
-const CreateTopicValidator = (
-  TopicForm.validator as Type<typeof TopicForm.validator.infer>
-)
-  .and(type({ categoryId: "string" }))
-  .configure(throwingArktype);
+const CreateTopicValidator = TopicForm.validator.and(
+  z.object({ categoryId: z.string() })
+);
 
 export default defineEventHandler(async (h3) => {
   const body = await readJournalValidatedBody(h3, CreateTopicValidator);

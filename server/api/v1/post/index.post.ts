@@ -1,21 +1,16 @@
-import type { Type } from "arktype";
 import { lte } from "drizzle-orm";
 import { PostForm } from "~~/forms/post";
-import {
-  readJournalValidatedMultipart,
-  throwingArktype,
-} from "~~/server/validation";
+import { readJournalValidatedMultipart } from "~~/server/validation";
 import { category, post, topic } from "~~/server/database/schema";
 import { validateTurnstile } from "~~/server/utils/turnstile";
+import { z } from "zod/v4";
 
-const CreatePostValidator = (
-  PostForm.validator as Type<typeof PostForm.validator.infer>
-)
-  .and({
-    categoryId: "string",
-    topicId: "string",
+const CreatePostValidator = PostForm.validator.and(
+  z.object({
+    categoryId: z.string(),
+    topicId: z.string(),
   })
-  .configure(throwingArktype);
+);
 
 export default defineEventHandler(async (h3) => {
   const drizzle = useDrizzle();

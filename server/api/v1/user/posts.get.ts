@@ -1,10 +1,10 @@
-import { type } from "arktype";
 import { count, desc, lte } from "drizzle-orm";
+import { z } from "zod/v4";
 import { category, post, topic } from "~~/server/database/schema";
 
 export default definePaginatedEndpoint(
-  type({
-    id: "string",
+  z.object({
+    id: z.string(),
   }),
   async (drizzle, { id }, permissions, offset, pageSize) => {
     return {

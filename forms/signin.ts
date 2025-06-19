@@ -1,10 +1,10 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 import { Forminator } from "./_form";
 
 export const SigninForm = Forminator(
-  type({
-    usernameEmail: "string > 0",
-    password: "string > 0",
+  z.object({
+    usernameEmail: z.string().nonempty(),
+    password: z.string().nonempty(),
   }),
   {
     usernameEmail: {

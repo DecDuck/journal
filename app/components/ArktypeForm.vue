@@ -68,6 +68,8 @@
       <div ref="turnstile" />
     </div>
 
+    {{ validationResult }}
+
     <div>
       <LoadingButton
         :loading="formLoading"
@@ -85,14 +87,15 @@
 
 <script setup lang="ts">
 import { XCircleIcon } from "@heroicons/vue/24/outline";
-import "~~/server/arktype";
-import { ArkErrors } from "arktype";
 import { FetchError } from "ofetch";
 import type { ForminatorResult } from "~~/forms/_form";
 import MarkdownEditor from "./Form/MarkdownEditor.vue";
 import TagEditor from "./Form/TagEditor.vue";
 import AttachmentsEditor from "./Form/AttachmentsEditor.vue";
 import ShortMarkdownEditor from "./Form/ShortMarkdownEditor.vue";
+import { $ZodError } from "zod/v4/core";
+import type { ZodSafeParseResult } from "zod/v4";
+import { arkyZod } from "~~/server/validation";
 
 type UnknownObject = { [key: string]: unknown };
 
@@ -104,7 +107,9 @@ const specialEditors: { [key: string]: Component } = {
 };
 
 const props = defineProps<{
-  forminator: ForminatorResult<unknown>;
+  forminator: ForminatorResult<{
+    safeParse: (data: unknown) => ZodSafeParseResult<unknown>;
+  }>;
   endpoint: string;
   dft?: UnknownObject;
   opts?: {
@@ -128,13 +133,13 @@ const dft = Object.fromEntries(
 const result = ref<UnknownObject>(dft);
 
 const validationResult = computed<{ [key: string]: string }>(() => {
-  const results = props.forminator.validator(result.value);
-  if (!(results instanceof ArkErrors)) {
+  const results = arkyZod(props.forminator.validator.safeParse(result.value));
+  if (!(results instanceof $ZodError)) {
     return {};
   }
 
   const errors: { [key: string]: string } = {};
-  for (const error of results) {
+  for (const error of results.issues) {
     for (const path of error.path) {
       errors[path.toString()] = error.message;
     }

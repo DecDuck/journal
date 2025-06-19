@@ -114,6 +114,7 @@
 </template>
 
 <script setup lang="ts">
+import type { z } from "zod/v4";
 import type { DeleteCategory } from "~~/server/api/v1/admin/category/index.delete";
 
 definePageMeta({
@@ -137,7 +138,7 @@ async function deleteCategory(id: string) {
       method: "DELETE",
       body: {
         id,
-      } satisfies typeof DeleteCategory.infer,
+      } satisfies z.infer<typeof DeleteCategory>,
     });
 
     const categoryIndex = categories.value.findIndex((e) => e.id == id);

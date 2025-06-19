@@ -1,12 +1,11 @@
-import "~~/server/arktype";
-import { type } from "arktype";
 import { Forminator } from "./_form";
+import { z } from "zod/v4";
 
 export const AdminForm = Forminator(
-  type({
-    about: "string?",
-    privacyPolicy: "string?",
-    codeOfConduct: "string?",
+  z.object({
+    about: z.string().optional(),
+    privacyPolicy: z.string().optional(),
+    codeOfConduct: z.string().optional(),
   }),
   {
     about: {

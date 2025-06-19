@@ -1,16 +1,12 @@
-import type { Type } from "arktype";
-import { type } from "arktype";
 import { TagForm } from "~~/forms/tag";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
+import { readJournalValidatedBody } from "~~/server/validation";
 import { tag } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
+import { z } from "zod/v4";
 
-const PatchTagValidator = (
-  TagForm.validator as Type<typeof TagForm.validator.infer>
-)
+const PatchTagValidator = TagForm.validator
   .partial()
-  .and(type({ id: "string" }))
-  .configure(throwingArktype);
+  .and(z.object({ id: z.string() }));
 
 export default defineEventHandler(async (h3) => {
   const body = await readJournalValidatedBody(h3, PatchTagValidator);

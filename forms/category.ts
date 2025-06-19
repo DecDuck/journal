@@ -1,14 +1,14 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 import { Forminator } from "./_form";
 
 export const CategoryForm = Forminator(
-  type({
-    name: "string > 0",
-    description: "string > 0",
-    readPermission: "number = -1",
-    writePermission: "number = 0",
-    adminPermission: "number = 900",
-    repository: "string?",
+  z.object({
+    name: z.string().nonempty(),
+    description: z.string().nonempty(),
+    readPermission: z.number().default(-1),
+    writePermission: z.number().default(0),
+    adminPermission: z.number().default(900),
+    repository: z.string().optional(),
   }),
   {
     name: {

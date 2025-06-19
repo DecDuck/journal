@@ -1,16 +1,10 @@
-import "~~/server/arktype";
-import type { ArkErrors } from "arktype";
+import type { z } from "zod/v4";
+import type { $ZodObject } from "zod/v4/core";
 
-type MinArktype<V> = ((object: unknown) => ArkErrors | V) & {
-  infer: V;
-  // Assumes we configure throwing arktype
-  configure: (configuration: object) => (object: unknown) => V;
-};
-
-export function Forminator<V>(
-  validator: MinArktype<V>,
+export function Forminator<V extends $ZodObject>(
+  validator: V,
   descriptions: {
-    [key in keyof V]: ForminatorMetadata<V[key]>;
+    [key in keyof z.infer<V>]: ForminatorMetadata<z.infer<V>[key]>;
   }
 ): ForminatorResult<V> {
   return {
@@ -29,6 +23,6 @@ type ForminatorMetadata<T> = {
 };
 
 export type ForminatorResult<V> = {
-  validator: MinArktype<V>;
+  validator: V;
   descriptions: Array<[string, ForminatorMetadata<unknown>]>;
 };

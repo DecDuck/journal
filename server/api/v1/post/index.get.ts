@@ -1,11 +1,12 @@
-import { ArkErrors, type } from "arktype";
 import { asc, lte } from "drizzle-orm";
+import { z } from "zod/v4";
 import { category, post, reply, user } from "~~/server/database/schema";
 import { mapAttachments } from "~~/server/utils/blob";
+import { throwyZod } from "~~/server/validation";
 
-export const FetchPost = type({
-  id: "string",
-  topicId: "string?",
+export const FetchPost = z.object({
+  id: z.string(),
+  topicId: z.string().optional(),
 });
 
 export default defineEventHandler(async (h3) => {
@@ -13,12 +14,7 @@ export default defineEventHandler(async (h3) => {
   const permissionLevel = await usePermissionLevel(h3, drizzle);
 
   const query = getQuery(h3);
-  const validatedQuery = FetchPost(query);
-  if (validatedQuery instanceof ArkErrors)
-    throw createError({
-      statusCode: 400,
-      statusMessage: validatedQuery.summary,
-    });
+  const validatedQuery = throwyZod(FetchPost.safeParse(query));
 
   const fetchedPost = await first(
     drizzle

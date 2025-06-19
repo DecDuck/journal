@@ -79,6 +79,7 @@
 
 <script setup lang="ts">
 import type { SerializeObject } from "nitropack";
+import type { z } from "zod/v4";
 import type { DeleteCategory } from "~~/server/api/v1/admin/category/index.delete";
 import type { Tag } from "~~/server/utils/drizzle";
 
@@ -103,7 +104,7 @@ async function deleteCategory(id: string) {
       method: "DELETE",
       body: {
         id,
-      } satisfies typeof DeleteCategory.infer,
+      } satisfies z.infer<typeof DeleteCategory>,
     });
 
     const tagIndex = tags.value.findIndex((e) => e.id == id);

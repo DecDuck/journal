@@ -1,8 +1,10 @@
-import type { Type } from "arktype";
-import { ArkErrors, type } from "arktype";
+import type { ZodType} from "zod/v4";
+import { z } from "zod/v4";
+import { arkyZod } from "../validation";
+import { $ZodError } from "zod/v4/core";
 
 export function definePaginatedEndpoint<T extends object, V>(
-  validator: Type<T>,
+  validator: ZodType<T>,
   pageQuery: (
     drizzle: ReturnType<typeof useDrizzle>,
     options: T,
@@ -11,26 +13,26 @@ export function definePaginatedEndpoint<T extends object, V>(
     count: number
   ) => Promise<{ results: Array<V>; count: number }>
 ) {
-  const paginationValidator = type({
-    page: "string?",
-    count: "string?",
+  const paginationValidator = z.object({
+    page: z.string().optional(),
+    count: z.string().optional(),
   });
 
   return defineEventHandler(async (h3) => {
     const query = getQuery(h3);
 
-    const optionsQuery = validator(query);
-    if (optionsQuery instanceof ArkErrors)
+    const optionsQuery = arkyZod(validator.safeParse(query));
+    if (optionsQuery instanceof $ZodError)
       throw createError({
         statusCode: 400,
-        message: optionsQuery.summary,
+        message: optionsQuery.message,
       });
 
-    const paginationQuery = paginationValidator(query);
-    if (paginationQuery instanceof ArkErrors)
+    const paginationQuery = arkyZod(paginationValidator.safeParse(query));
+    if (paginationQuery instanceof $ZodError)
       throw createError({
         statusCode: 400,
-        message: paginationQuery.summary,
+        message: paginationQuery.message,
       });
 
     const pageSize = parseInt(paginationQuery.count ?? "10");

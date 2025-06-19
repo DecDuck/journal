@@ -138,6 +138,7 @@
 <script setup lang="ts">
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 import type { SerializeObject } from "nitropack";
+import type { z } from "zod/v4";
 import type { DeleteCategory } from "~~/server/api/v1/admin/category/index.delete";
 import type { DeleteTopic } from "~~/server/api/v1/admin/topic/index.delete";
 import type { Topic } from "~~/server/utils/drizzle";
@@ -176,7 +177,7 @@ async function deleteCategory() {
       method: "DELETE",
       body: {
         id: category.value!.id,
-      } satisfies typeof DeleteCategory.infer,
+      } satisfies z.infer<typeof DeleteCategory>,
     });
 
     const categoryIndex = categories.value.findIndex(
@@ -200,7 +201,7 @@ async function deleteTopic(id: string) {
       method: "DELETE",
       body: {
         id,
-      } satisfies typeof DeleteTopic.infer,
+      } satisfies z.infer<typeof DeleteTopic>,
     });
 
     const topicsInex = topics.value.findIndex((e) => e.id == id);

@@ -1,33 +1,30 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 import { Forminator } from "./_form";
 
 const maxIndividual = 2 * 1024 * 1024; // 2 MB
 const maxTotal = 10 * 1024 * 1024; // 10 MB
 
 export const ReplyForm = Forminator(
-  type({
-    content: "string > 0",
-    attachments: "object[]?",
-  }).narrow((v, ctx) => {
-    if (v.attachments) {
-      const files = v.attachments as File[];
-      if (files.find((e) => e.size > maxIndividual)) {
-        return ctx.reject({
-          path: ["attachments"],
-          expected: `less than ${maxIndividual} bytes`,
-          actual: "",
-        });
-      }
-      const total = files.reduce((a, b) => a + b.size, 0);
-      if (total > maxTotal) {
-        return ctx.reject({
-          path: ["attachments"],
-          expected: `total less than ${maxTotal} bytes`,
-          actual: total.toString(),
-        });
-      }
-    }
-    return true;
+  z.object({
+    content: z.string().nonempty(),
+    attachments: z
+      .array(z.unknown())
+      .optional()
+      .refine(
+        (v) => {
+          if (!v) return true;
+          const files = v as unknown as File[];
+          if (files.find((e) => e.size > maxIndividual)) {
+            return false;
+          }
+          const total = files.reduce((a, b) => a + b.size, 0);
+          if (total > maxTotal) {
+            return false;
+          }
+          return true;
+        },
+        { error: "Attachments invalid." }
+      ),
   }),
   {
     content: {

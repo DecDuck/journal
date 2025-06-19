@@ -1,13 +1,10 @@
 import { TagForm } from "~~/forms/tag";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
+import { readJournalValidatedBody } from "~~/server/validation";
 import { tag } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
 
 export default defineEventHandler(async (h3) => {
-  const body = await readJournalValidatedBody(
-    h3,
-    TagForm.validator.configure(throwingArktype)
-  );
+  const body = await readJournalValidatedBody(h3, TagForm.validator);
 
   const drizzle = useDrizzle();
 

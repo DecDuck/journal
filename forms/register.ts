@@ -1,13 +1,18 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 import { Forminator } from "./_form";
 
 export const RegisterForm = Forminator(
-  type({
-    displayName: "string > 0",
-    username: "5 <= string.alphanumeric <= 10",
-    email: "string.email",
-    password: "string >= 14",
-    cftoken: "string > 0",
+  z.object({
+    displayName: z.string().nonempty(),
+    username: z
+      .string()
+      .regex(/^[a-zA-Z0-9]+$/g)
+      .min(5)
+      .max(10)
+      .transform((e) => e.toLowerCase()),
+    email: z.string().regex(/^\S+@\S+\.\S+$/g),
+    password: z.string().min(14),
+    cftoken: z.string(),
   }),
   {
     displayName: {

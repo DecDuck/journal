@@ -10,7 +10,7 @@ export default defineEventHandler(async (h3) => {
   const head = await headBlob(blob, id);
   if (!head) throw createError({ statusCode: 404 });
 
-  const permissions = head.customMetadata.permissions.split(",") || [];
+  const permissions = head.customMetadata.permissions?.split(",") || [];
 
   const session = await useSession<JournalSession>(h3, GLOBAL_SESSION_CONFIG);
   const userId = session.data.userId;

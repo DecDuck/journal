@@ -1,9 +1,9 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 import { Forminator } from "./_form";
 
 export const TagForm = Forminator(
-  type({
-    name: "string",
+  z.object({
+    name: z.string().nonempty(),
   }),
   {
     name: {

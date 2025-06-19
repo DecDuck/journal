@@ -1,6 +1,6 @@
-import { type } from "arktype";
 import type { H3Event } from "h3";
 import { user } from "../database/schema";
+import { z } from "zod/v4";
 
 const runtimeConfig = useRuntimeConfig();
 
@@ -9,11 +9,11 @@ export const GLOBAL_SESSION_CONFIG = {
   password: runtimeConfig.sessionSecret,
 } satisfies Parameters<typeof useSession>[1];
 
-export const JournalSession = type({
-  userId: "string",
+export const JournalSession = z.object({
+  userId: z.string(),
 });
 
-export type JournalSession = Partial<typeof JournalSession.infer>;
+export type JournalSession = Partial<z.infer<typeof JournalSession>>;
 
 export async function useAdminAuthenticated(
   h3: H3Event,

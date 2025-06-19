@@ -1,10 +1,10 @@
-import { type } from "arktype";
 import { Forminator } from "./_form";
+import { z } from "zod/v4";
 
 export const TopicForm = Forminator(
-  type({
-    name: "string",
-    description: "string",
+  z.object({
+    name: z.string().nonempty(),
+    description: z.string().nonempty(),
   }),
   {
     name: {

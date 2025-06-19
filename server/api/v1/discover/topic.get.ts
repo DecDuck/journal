@@ -1,15 +1,16 @@
-import { type } from "arktype";
 import { lte } from "drizzle-orm";
+import { z } from "zod/v4";
 import { category, topic } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
+import { throwyZod } from "~~/server/validation";
 
-const DiscoverTopics = type({
-  limit: "string = '8'",
+const DiscoverTopics = z.object({
+  limit: z.string().default("8"),
 });
 
 export default defineEventHandler(async (h3) => {
   const query = getQuery(h3);
-  const body = DiscoverTopics(query);
+  const body = throwyZod(DiscoverTopics.safeParse(query));
 
   const limit = Math.min(parseInt(body.limit), 20); // Hard limit of 20
 

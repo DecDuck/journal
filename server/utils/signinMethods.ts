@@ -1,9 +1,9 @@
-import { type } from "arktype";
+import { z } from "zod/v4";
 
 export enum SigninMethod {
   Password = "password",
 }
 
-export const SigninPasswordValidator = type({
-  hash: "string",
+export const SigninPasswordValidator = z.object({
+  hash: z.string(),
 });

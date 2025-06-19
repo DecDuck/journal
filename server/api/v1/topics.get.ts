@@ -1,15 +1,16 @@
-import { type } from "arktype";
 import { lte } from "drizzle-orm";
+import { z } from "zod/v4";
 import { category, topic } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
+import { throwyZod } from "~~/server/validation";
 
-const FetchTopic = type({
-  categoryId: "string",
+const FetchTopic = z.object({
+  categoryId: z.string(),
 });
 
 export default defineEventHandler(async (h3) => {
   const query = getQuery(h3);
-  const options = FetchTopic(query);
+  const options = throwyZod(FetchTopic.safeParse(query));
 
   const drizzle = useDrizzle();
   const permissionLevel = await usePermissionLevel(h3, drizzle);

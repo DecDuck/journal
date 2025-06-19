@@ -1,19 +1,14 @@
-import type { Type } from "arktype";
 import { lte } from "drizzle-orm";
 import { ReplyForm } from "~~/forms/reply";
-import {
-  readJournalValidatedMultipart,
-  throwingArktype,
-} from "~~/server/validation";
+import { readJournalValidatedMultipart } from "~~/server/validation";
 import { category, post, reply } from "~~/server/database/schema";
+import { z } from "zod/v4";
 
-const CreateReplyValidator = (
-  ReplyForm.validator as Type<typeof ReplyForm.validator.infer>
-)
-  .and({
-    postId: "string",
+const CreateReplyValidator = ReplyForm.validator.and(
+  z.object({
+    postId: z.string(),
   })
-  .configure(throwingArktype);
+);
 
 export default defineEventHandler(async (h3) => {
   const drizzle = useDrizzle();

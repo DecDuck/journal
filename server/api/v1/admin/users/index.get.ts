@@ -1,9 +1,9 @@
-import { type } from "arktype";
 import { count } from "drizzle-orm";
+import { z } from "zod/v4";
 import { user } from "~~/server/database/schema";
 
 export default definePaginatedEndpoint(
-  type({}),
+  z.object({}),
   async (drizzle, _options, permissions, offset, pageSize) => {
     if (!(permissions >= 900)) throw createError({ statusCode: 403 });
 

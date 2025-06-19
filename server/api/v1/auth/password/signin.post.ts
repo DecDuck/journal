@@ -1,17 +1,11 @@
 import type { JournalSession } from "#imports";
-import { ArkErrors } from "arktype";
 import { SigninForm } from "~~/forms/signin";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
+import { readJournalValidatedBody, throwyZod } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { first } from "~~/server/utils/drizzle";
 
-export default defineEventHandler<{
-  body: typeof SigninForm.validator.infer;
-}>(async (h3) => {
-  const body = await readJournalValidatedBody(
-    h3,
-    SigninForm.validator.configure(throwingArktype)
-  );
+export default defineEventHandler(async (h3) => {
+  const body = await readJournalValidatedBody(h3, SigninForm.validator);
 
   const drizzle = useDrizzle();
 
@@ -52,13 +46,7 @@ export default defineEventHandler<{
   if (!signinMethod) throw fail();
 
   const rawData = JSON.parse(signinMethod.data);
-  const data = SigninPasswordValidator(rawData);
-  if (data instanceof ArkErrors)
-    throw createError({
-      statusCode: 500,
-      statusMessage:
-        "User authentication corrupted - please contact server administrator.",
-    });
+  const data = throwyZod(SigninPasswordValidator.safeParse(rawData));
 
   const valid = await verifyPassword(data.hash, body.password);
   if (!valid) throw fail();

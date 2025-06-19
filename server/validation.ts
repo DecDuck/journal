@@ -2,58 +2,31 @@
 // Thanks again guys
 
 import type { BlobObject } from "@nuxthub/core";
-import { ArkErrors } from "arktype";
-import { configure } from "arktype/config";
 import type { H3Event } from "h3";
-
-export const throwingArktype = configure({
-  onFail: (errors) => errors.throw(),
-  actual: () => "",
-});
-
-// be sure to specify both the runtime and static configs
-
-declare global {
-  interface ArkEnv {
-    onFail: typeof throwingArktype.onFail;
-  }
-}
+import type { ZodSafeParseResult, ZodType } from "zod/v4";
 
 export async function readJournalValidatedBody<T>(
   event: H3Event,
-  validate: (data: object) => T
+  validate: ZodType<T>
 ): Promise<T> {
   const body = await readBody(event);
-  try {
-    // Delete all values that are 'null'
-    if (typeof body === "object" && !Array.isArray(body) && body !== null) {
-      for (const [key, value] of Object.entries(body) as Array<
-        [string, unknown]
-      >) {
-        if (value === null) {
-          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-          delete body[key];
-        }
+  // Delete all values that are 'null'
+  if (typeof body === "object" && !Array.isArray(body) && body !== null) {
+    for (const [key, value] of Object.entries(body) as Array<
+      [string, unknown]
+    >) {
+      if (value === null) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete body[key];
       }
     }
-    return validate(body);
-  } catch (e) {
-    if (e instanceof ArkErrors) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: e.summary,
-      });
-    }
-    throw createError({
-      statusCode: 400,
-      statusMessage: e instanceof Error ? e.message : `${e}`,
-    });
   }
+  return throwyZod(validate.safeParse(body));
 }
 
 export async function readJournalValidatedMultipart<T>(
   event: H3Event,
-  validate: (data: object) => T,
+  validate: ZodType<T>,
   permissions = "anonymous:read"
 ) {
   const body = await readMultipartFormData(event);
@@ -90,21 +63,7 @@ export async function readJournalValidatedMultipart<T>(
   }
 
   // Validate before bothering to upload everything
-  let validBody;
-  try {
-    validBody = validate(objectBody);
-  } catch (e) {
-    if (e instanceof ArkErrors) {
-      throw createError({
-        statusCode: 400,
-        message: e.summary,
-      });
-    }
-    throw createError({
-      statusCode: 400,
-      statusMessage: e instanceof Error ? e.message : `${e}`,
-    });
-  }
+  const validBody = throwyZod(validate.safeParse(objectBody));
 
   for (const part of delayedParts) {
     if (!part.filename || !part.name)
@@ -124,4 +83,16 @@ export async function readJournalValidatedMultipart<T>(
   }
 
   return { body: validBody, files };
+}
+
+export function arkyZod<T>(input: ZodSafeParseResult<T>) {
+  return (input.data ?? input.error)!;
+}
+
+export function throwyZod<T>(input: ZodSafeParseResult<T>) {
+  if (input.data) {
+    return input.data;
+  }
+
+  throw createError({ statusCode: 400, message: input.error!.message });
 }

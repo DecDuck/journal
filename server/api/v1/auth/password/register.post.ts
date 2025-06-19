@@ -1,5 +1,5 @@
 import { RegisterForm } from "~~/forms/register";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
+import { readJournalValidatedBody } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { randomUUID } from "~~/server/utils/uuid";
 import * as jdenticon from "jdenticon";
@@ -7,14 +7,10 @@ import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
 import { SigninMethod } from "~~/server/utils/signinMethods";
 import { hashPassword } from "~~/server/utils/password";
 import { validateTurnstile } from "~~/server/utils/turnstile";
+import type { z } from "zod/v4";
 
-export default defineEventHandler<{
-  body: typeof RegisterForm.validator.infer;
-}>(async (h3) => {
-  const body = await readJournalValidatedBody(
-    h3,
-    RegisterForm.validator.configure(throwingArktype)
-  );
+export default defineEventHandler(async (h3) => {
+  const body = await readJournalValidatedBody(h3, RegisterForm.validator);
 
   // Turnstile validation
   const turnstileResult = await validateTurnstile(body.cftoken);
@@ -64,14 +60,14 @@ export default defineEventHandler<{
     email: body.email,
   } satisfies typeof user.$inferInsert;
 
-  const [newlyCreatedUser] = await drizzle
-    .insert(user)
-    .values(newUser)
-    .returning();
+  const newlyCreatedUser = await first(
+    drizzle.insert(user).values(newUser).returning()
+  );
+  if (!newlyCreatedUser) throw createError({ statusCode: 500 });
 
   const passwordAuth = {
     hash: await hashPassword(body.password),
-  } satisfies typeof SigninPasswordValidator.infer;
+  } satisfies z.infer<typeof SigninPasswordValidator>;
 
   const signinMethod = {
     userId: newlyCreatedUser.id,

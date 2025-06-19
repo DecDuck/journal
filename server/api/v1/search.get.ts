@@ -1,10 +1,10 @@
-import { type } from "arktype";
 import { count, desc, like, lte } from "drizzle-orm";
+import { z } from "zod/v4";
 import { category, post, topic, user } from "~~/server/database/schema";
 
-const SearchQuery = type({
-  q: "string",
-  topicId: "string?",
+const SearchQuery = z.object({
+  q: z.string(),
+  topicId: z.string().optional(),
 });
 
 export default definePaginatedEndpoint(
