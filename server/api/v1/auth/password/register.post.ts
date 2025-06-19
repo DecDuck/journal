@@ -2,12 +2,12 @@ import { RegisterForm } from "~~/forms/register";
 import { readJournalValidatedBody } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { randomUUID } from "~~/server/utils/uuid";
-import jdenticon from "jdenticon";
 import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
 import { SigninMethod } from "~~/server/utils/signinMethods";
 import { hashPassword } from "~~/server/utils/password";
 import { validateTurnstile } from "~~/server/utils/turnstile";
 import type { z } from "zod/v4";
+import { generateFromString } from "generate-avatar";
 
 export default defineEventHandler(async (h3) => {
   const body = await readJournalValidatedBody(h3, RegisterForm.validator);
@@ -40,15 +40,13 @@ export default defineEventHandler(async (h3) => {
 
   const userId = randomUUID();
 
-  // https://github.com/cloudflare/workers-sdk/issues/5771
-  const avatarBlob = new Blob([
-    jdenticon.toPng(userId, 256) as unknown as ArrayBuffer,
-  ]);
-  const avatar = await blob.put(userId, avatarBlob, {
+  const avatarStr = generateFromString(userId);
+  const avatar = await blob.put(userId, avatarStr, {
     prefix: "avatar",
     customMetadata: {
       permissions: "anonymous:read",
     },
+    contentType: "image/svg+xml",
   });
 
   const newUser = {
