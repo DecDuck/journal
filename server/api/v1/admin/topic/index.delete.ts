@@ -1,5 +1,5 @@
 import { type } from "arktype";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { topic } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
 

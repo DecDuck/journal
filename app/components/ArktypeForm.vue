@@ -85,6 +85,7 @@
 
 <script setup lang="ts">
 import { XCircleIcon } from "@heroicons/vue/24/outline";
+import "~~/server/arktype";
 import { ArkErrors } from "arktype";
 import { FetchError } from "ofetch";
 import type { ForminatorResult } from "~~/forms/_form";

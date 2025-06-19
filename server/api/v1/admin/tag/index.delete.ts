@@ -1,6 +1,6 @@
 import { type } from "arktype";
 import { like } from "drizzle-orm";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { post, tag } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
 

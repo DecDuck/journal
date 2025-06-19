@@ -4,7 +4,7 @@ import { ReplyForm } from "~~/forms/reply";
 import {
   readJournalValidatedMultipart,
   throwingArktype,
-} from "~~/server/arktype";
+} from "~~/server/validation";
 import { category, post, reply } from "~~/server/database/schema";
 
 const CreateReplyValidator = (

@@ -1,7 +1,7 @@
 import type { Type } from "arktype";
 import { type } from "arktype";
 import { CategoryForm } from "~~/forms/category";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { category } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
 

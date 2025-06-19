@@ -1,5 +1,5 @@
 import { TagForm } from "~~/forms/tag";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { tag } from "~~/server/database/schema";
 import { useAdminAuthenticated } from "~~/server/utils/session";
 

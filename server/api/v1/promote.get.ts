@@ -3,7 +3,7 @@
  */
 
 import { type } from "arktype";
-import { throwingArktype } from "~~/server/arktype";
+import { throwingArktype } from "~~/server/validation";
 import { user } from "~~/server/database/schema";
 import { useAuthenticated } from "~~/server/utils/session";
 

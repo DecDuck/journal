@@ -1,3 +1,4 @@
+import "~~/server/arktype";
 import { type } from "arktype";
 import { Forminator } from "./_form";
 

@@ -4,7 +4,7 @@ import { PostForm } from "~~/forms/post";
 import {
   readJournalValidatedMultipart,
   throwingArktype,
-} from "~~/server/arktype";
+} from "~~/server/validation";
 import { category, post, topic } from "~~/server/database/schema";
 import { validateTurnstile } from "~~/server/utils/turnstile";
 

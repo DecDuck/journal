@@ -1,5 +1,5 @@
 import { RegisterForm } from "~~/forms/register";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { randomUUID } from "~~/server/utils/uuid";
 import * as jdenticon from "jdenticon";

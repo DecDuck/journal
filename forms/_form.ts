@@ -1,3 +1,4 @@
+import "~~/server/arktype";
 import type { ArkErrors } from "arktype";
 
 type MinArktype<V> = ((object: unknown) => ArkErrors | V) & {

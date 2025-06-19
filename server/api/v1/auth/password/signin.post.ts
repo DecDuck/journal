@@ -1,7 +1,7 @@
 import type { JournalSession } from "#imports";
 import { ArkErrors } from "arktype";
 import { SigninForm } from "~~/forms/signin";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { first } from "~~/server/utils/drizzle";
 

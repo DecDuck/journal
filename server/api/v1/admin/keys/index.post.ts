@@ -1,5 +1,5 @@
 import { AdminForm } from "~~/forms/admin";
-import { readJournalValidatedBody, throwingArktype } from "~~/server/arktype";
+import { readJournalValidatedBody, throwingArktype } from "~~/server/validation";
 
 export default defineEventHandler(async (h3) => {
   const drizzle = useDrizzle();
