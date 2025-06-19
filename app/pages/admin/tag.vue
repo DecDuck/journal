@@ -71,7 +71,7 @@
       </div>
     </div>
     <TagEditor
-      v-model="(tagEditorOpen as boolean)"
+      v-model="tagEditorOpen"
       :existing="typeof tagEditorOpen === 'object' ? tagEditorOpen : undefined"
     />
   </div>

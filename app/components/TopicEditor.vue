@@ -1,5 +1,5 @@
 <template>
-  <ModalTemplate v-model="open">
+  <ModalTemplate v-model="realOpen">
     <template #default>
       <ArktypeForm
         :forminator="TopicForm"
@@ -27,7 +27,16 @@ import type { SerializeObject } from "nitropack";
 import { TopicForm } from "~~/forms/topic";
 import type { Topic } from "~~/server/utils/drizzle";
 
-const open = defineModel<boolean>();
+const open = defineModel<boolean | object>();
+
+const realOpen = computed({
+  get() {
+    return !!open.value;
+  },
+  set(v) {
+    open.value = v;
+  },
+});
 
 const props = defineProps<{
   categoryId: string;

@@ -124,7 +124,7 @@
         <!-- topic creator -->
       </div>
       <TopicEditor
-        v-model="(topicEditorOpen as boolean)"
+        v-model="topicEditorOpen"
         :category-id="category.id"
         :existing="
           typeof topicEditorOpen === 'object' ? topicEditorOpen : undefined

@@ -1,5 +1,5 @@
 <template>
-  <ModalTemplate v-model="open">
+  <ModalTemplate v-model="realOpen">
     <template #default>
       <ArktypeForm
         :forminator="TagForm"
@@ -24,7 +24,16 @@ import type { SerializeObject } from "nitropack";
 import { TagForm } from "~~/forms/tag";
 import type { Tag } from "~~/server/utils/drizzle";
 
-const open = defineModel<boolean>();
+const open = defineModel<boolean | object>();
+
+const realOpen = computed({
+  get() {
+    return !!open.value;
+  },
+  set(v) {
+    open.value = v;
+  },
+});
 
 const props = defineProps<{
   existing?: SerializeObject<Tag>;
