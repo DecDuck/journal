@@ -150,7 +150,7 @@ async function update(pageNumber: number) {
 const page = ref(0);
 const showBack = computed(() => page.value !== 0);
 const showForward = computed(() =>
-  value.value ? value.value.pages >= page.value + 1 : false
+  value.value ? value.value.pages < page.value + 1 : false
 );
 
 type MiddleConfiguration = { before: boolean; after: boolean; arr: number[] };

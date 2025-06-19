@@ -10,6 +10,7 @@ export const PostForm = Forminator(
     content: "string > 0",
     tags: "string[]",
     attachments: "object[]?",
+    cftoken: "string",
   }).narrow((v, ctx) => {
     if (v.attachments) {
       const files = v.attachments as File[];
@@ -59,6 +60,10 @@ export const PostForm = Forminator(
         maxIndividual,
         maxTotal,
       },
+    },
+    cftoken: {
+      name: "",
+      type: "hidden",
     },
   }
 );

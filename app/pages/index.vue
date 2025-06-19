@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-
-const posts = await $journalFetch("/api/v1/discover/post");
-const runtimeConfig = useRuntimeConfig();
-
-const router = useRouter();
-
-const query = ref("");
-function search() {
-  router.push({ query: { q: query.value }, path: "/search" });
-}
-</script>
-
 <template>
   <div>
     <div class="max-w-xl mx-auto">
@@ -41,15 +27,15 @@ function search() {
       </form>
     </div>
 
-    <div class="mt-16 grid lg:grid-cols-2 gap-3">
-      <div class="">
-        <div class="flex flex-col items-center">
-          <h1 class="text-xl font-zinc-900 font-bold">New Posts</h1>
-          <NuxtLink class="text-sm text-blue-600" href="/post"
-            >View all &rarr;</NuxtLink
+    <div class="mt-16 grid lg:grid-cols-2 gap-8">
+      <div>
+        <div class="flex flex-col">
+          <h1 class="text-xl font-zinc-900 font-bold">Recent posts</h1>
+          <NuxtLink class="text-sm text-blue-600" href="/search"
+            >Search for posts &rarr;</NuxtLink
           >
         </div>
-        <div class="mt-4 space-y-2">
+        <div class="mt-4 space-y-2 grid grid-cols-1">
           <PostPreviewWidget
             v-for="{ post, category, topic, user } in posts"
             :key="post.id"
@@ -60,6 +46,29 @@ function search() {
           />
         </div>
       </div>
+      <div>
+        {{ categories }}
+      </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+
+const posts = await $journalFetch("/api/v1/discover/post");
+const runtimeConfig = useRuntimeConfig();
+
+const router = useRouter();
+
+const query = ref("");
+function search() {
+  router.push({ query: { q: query.value }, path: "/search" });
+}
+
+const categories = await useCategories();
+
+useHead({
+  title: "Home",
+});
+</script>

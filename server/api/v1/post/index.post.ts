@@ -6,6 +6,7 @@ import {
   throwingArktype,
 } from "~~/server/arktype";
 import { category, post, topic } from "~~/server/database/schema";
+import { validateTurnstile } from "~~/server/utils/turnstile";
 
 const CreatePostValidator = (
   PostForm.validator as Type<typeof PostForm.validator.infer>
@@ -31,6 +32,13 @@ export default defineEventHandler(async (h3) => {
     h3,
     CreatePostValidator
   );
+
+  const turnstileResult = await validateTurnstile(body.cftoken);
+  if (!turnstileResult)
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Failed to validate Turnstile token.",
+    });
 
   const postCategory = await first(
     drizzle

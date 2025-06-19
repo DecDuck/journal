@@ -41,7 +41,7 @@
                     :key="action.url"
                     :href="action.url"
                     type="button"
-                    class="rounded-md bg-white text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+                    class="rounded-md bg-white text-sm font-medium text-blue-600 hover:text-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-hidden"
                   >
                     {{ action.name }}
                   </NuxtLink>
@@ -50,7 +50,7 @@
               <div class="ml-4 flex shrink-0">
                 <button
                   type="button"
-                  class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+                  class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-hidden"
                   @click="() => clearNotification(notification.id)"
                 >
                   <span class="sr-only">Close</span>

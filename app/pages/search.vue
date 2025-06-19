@@ -22,7 +22,7 @@
       >
         <p class="text-sm text-zinc-400 animate-pulse">Loading...</p>
       </div>
-      <div v-else class="py-3 space-y-2">
+      <div v-else-if="data.results.length > 0" class="py-3 space-y-2">
         <PostPreviewWidget
           v-for="{post, category, topic} in (data.results as Array<{post: SerializeObject<Post>, category: SerializeObject<Category>, topic: SerializeObject<Topic>}>)"
           :key="post.id"
@@ -30,6 +30,9 @@
           :category="category"
           :topic="topic"
         />
+      </div>
+      <div v-else class="min-h-[30rem] flex items-center justify-center">
+        <p class="text-sm text-zinc-400 animate-pulse">No results found.</p>
       </div>
     </PaginatedContent>
   </div>

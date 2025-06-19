@@ -51,14 +51,15 @@
               </div>
               <div class="hidden md:block">
                 <div v-if="user" class="ml-4 flex items-center md:ml-6">
-                  <button
+                  <NuxtLink
+                    to="/search"
                     type="button"
                     class="relative rounded-full bg-zinc-800 p-1 text-zinc-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-zinc-800 focus:outline-hidden"
                   >
                     <span class="absolute -inset-1.5" />
-                    <span class="sr-only">View notifications</span>
-                    <BellIcon class="size-6" aria-hidden="true" />
-                  </button>
+                    <span class="sr-only">Search</span>
+                    <MagnifyingGlassIcon class="size-6" aria-hidden="true" />
+                  </NuxtLink>
 
                   <!-- Profile dropdown -->
                   <Menu as="div" class="relative ml-3">
@@ -171,14 +172,15 @@
                   @{{ user.username }}
                 </div>
               </div>
-              <button
+              <NuxtLink
+                to="/search"
                 type="button"
                 class="relative ml-auto shrink-0 rounded-full bg-zinc-800 p-1 text-zinc-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-zinc-800 focus:outline-hidden"
               >
                 <span class="absolute -inset-1.5" />
-                <span class="sr-only">View notifications</span>
-                <BellIcon class="size-6" aria-hidden="true" />
-              </button>
+                <span class="sr-only">Search</span>
+                <MagnifyingGlassIcon class="size-6" aria-hidden="true" />
+              </NuxtLink>
             </div>
             <div class="mt-3 space-y-1 px-2">
               <DisclosureButton
@@ -224,7 +226,11 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 const user = useUser();
 

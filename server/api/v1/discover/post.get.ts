@@ -4,7 +4,7 @@ import { category, post, topic, user } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
 
 const DiscoverPosts = type({
-  limit: "string = '8'",
+  limit: "string = '4'",
 });
 
 export default defineEventHandler(async (h3) => {

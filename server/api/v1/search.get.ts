@@ -9,7 +9,7 @@ const SearchQuery = type({
 export default definePaginatedEndpoint(
   SearchQuery,
   async (drizzle, options, permissions, offset, limit) => {
-    const likeStr = `%${options.q.toLowerCase()}%`;
+    const likeStr = `%${options.q.toLowerCase()}%`; // This SHOULD be an SQL injection vulnerability
 
     const query = and(
       or(

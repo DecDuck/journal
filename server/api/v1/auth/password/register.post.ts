@@ -6,6 +6,7 @@ import * as jdenticon from "jdenticon";
 import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
 import { SigninMethod } from "~~/server/utils/signinMethods";
 import { hashPassword } from "~~/server/utils/password";
+import { validateTurnstile } from "~~/server/utils/turnstile";
 
 export default defineEventHandler<{
   body: typeof RegisterForm.validator.infer;
@@ -15,24 +16,13 @@ export default defineEventHandler<{
     RegisterForm.validator.configure(throwingArktype)
   );
 
-  const runtimeConfig = useRuntimeConfig();
-
   // Turnstile validation
-  const result = await $fetch<{ success: boolean }>(
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-    {
-      body: {
-        secret: runtimeConfig.turnstileSecret,
-        response: body.cftoken,
-      },
-      method: "POST",
-    }
-  );
+  const turnstileResult = await validateTurnstile(body.cftoken);
 
-  if (!result.success)
+  if (!turnstileResult)
     throw createError({
       statusCode: 400,
-      statusMessage: "Failed to validate Turnstile key.",
+      statusMessage: "Failed to validate Turnstile token.",
     });
 
   // Create user
@@ -74,7 +64,10 @@ export default defineEventHandler<{
     email: body.email,
   } satisfies typeof user.$inferInsert;
 
-  const [newlyCreatedUser] = await drizzle.insert(user).values(newUser).returning();
+  const [newlyCreatedUser] = await drizzle
+    .insert(user)
+    .values(newUser)
+    .returning();
 
   const passwordAuth = {
     hash: await hashPassword(body.password),
