@@ -5,6 +5,7 @@ import { mapAttachments } from "~~/server/utils/blob";
 
 export const FetchPost = type({
   id: "string",
+  topicId: "string?",
 });
 
 export default defineEventHandler(async (h3) => {
@@ -26,7 +27,10 @@ export default defineEventHandler(async (h3) => {
       .where(
         and(
           eq(post.id, validatedQuery.id),
-          lte(category.readPermission, permissionLevel)
+          lte(category.readPermission, permissionLevel),
+          validatedQuery.topicId
+            ? eq(post.topicId, validatedQuery.topicId)
+            : undefined
         )
       )
       .innerJoin(category, eq(post.categoryId, category.id))

@@ -24,7 +24,6 @@
           ref="contentEditor"
           v-model="model"
           class="flex-1 px-2 py-1 rounded-md bg-white border border-zinc-300 text-zinc-900 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
-          required
           @keydown="handleContentKeydown"
         />
       </div>

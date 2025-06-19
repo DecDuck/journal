@@ -7,10 +7,55 @@
     <body class="h-full">
     ```
   -->
-  <div class="min-h-full flex flex-col flex-col-reverse">
-    <main>
+  <div class="min-h-screen flex flex-col flex-col-reverse">
+    <footer class="bg-white">
+      <div
+        class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8"
+      >
+        <nav
+          class="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm/6"
+          aria-label="Footer"
+        >
+          <NuxtLink
+            v-for="item in footer"
+            :key="item.name"
+            :href="item.href"
+            class="text-gray-600 hover:text-gray-900"
+            >{{ item.name }}</NuxtLink
+          >
+        </nav>
+        <div
+          v-if="social.length > 0"
+          class="mt-16 flex justify-center gap-x-10"
+        >
+          <NuxtLink
+            v-for="item in social"
+            :key="item.name"
+            :href="item.href"
+            class="text-gray-600 hover:text-gray-800"
+            target="_blank"
+          >
+            <span class="sr-only">{{ item.name }}</span>
+            <component :is="item.icon" class="size-6" aria-hidden="true" />
+          </NuxtLink>
+        </div>
+        <p class="mt-10 text-center text-sm/6 text-gray-600">
+          &copy; {{ new Date().getFullYear() }}
+          {{ runtimeConfig.public.whitelabel.title }}.
+          {{ runtimeConfig.public.whitelabel.licenseText }}. Based on
+          <NuxtLink
+            class="text-gray-700 hover:underline"
+            to="https://github.com/DecDuck/journal"
+            target="_blank"
+            >Journal</NuxtLink
+          >.
+        </p>
+      </div>
+    </footer>
+
+    <main class="grow">
       <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 py-4">
-        <div class="rounded-lg bg-white px-5 py-6 shadow-sm sm:px-6">
+        <div class="rounded-lg bg-white px-5 py-6 sm:px-6">
           <slot />
         </div>
       </div>
@@ -231,8 +276,11 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
+import type { Component } from "vue";
 
 const user = useUser();
+
+const runtimeConfig = useRuntimeConfig();
 
 const route = useRoute();
 
@@ -277,4 +325,33 @@ const userNavigation = computed(() => [
   { name: "Settings", href: "/profile" },
   { name: "Sign out", href: "/signout" },
 ]);
+
+const privacyPolcy = await usePrivacyPolicy();
+const conduct = await useCodeOfConduct();
+
+const footer = computed<Array<{ name: string; href: string }>>(() => {
+  const values = [{ name: "About", href: "/about" }];
+
+  if (privacyPolcy.value) {
+    values.push({
+      name: "Privacy",
+      href: "/privacy",
+    });
+  }
+
+  if (conduct.value) {
+    values.push({
+      name: "Code of Conduct",
+      href: "/conduct",
+    });
+  }
+
+  values.push({
+    name: "New Post",
+    href: "/new",
+  });
+
+  return values;
+});
+const social: Array<{ name: string; href: string; icon: Component }> = [];
 </script>

@@ -37,7 +37,7 @@ export const useTopics = async (id: string) => {
   );
   if (state.value[id] === undefined) {
     const topics = await $journalFetch<Array<SerializeObject<Topic>>>(
-      "/api/v1/topic",
+      "/api/v1/topics",
       {
         query: { categoryId: id },
       }
@@ -47,8 +47,54 @@ export const useTopics = async (id: string) => {
   return computed(() => state.value[id]!);
 };
 
+export const usePrivacyPolicy = async () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const state = useState<string | undefined>("privacyPolicy", () => null);
+  if (state.value === null) {
+    state.value = await $journalFetch("/api/v1/privacy");
+  }
+
+  return state;
+};
+
+export const useCodeOfConduct = async () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const state = useState<string | undefined>("conduct", () => null);
+  if (state.value === null) {
+    state.value = await $journalFetch("/api/v1/conduct");
+  }
+
+  return state;
+};
+
+export const useAbout = async () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const state = useState<string | undefined>("about", () => null);
+  if (state.value === null) {
+    state.value = await $journalFetch("/api/v1/about");
+  }
+
+  return state;
+};
+
 export function relativeTime(time: string | Date) {
   const jsDate = typeof time === "string" ? new Date(time) : time;
   const datetime = DateTime.fromJSDate(jsDate);
   return datetime.toRelative()!;
 }
+
+export const stringToColour = (str: string) => {
+  let hash = 0;
+  str.split("").forEach((char) => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash);
+  });
+  let colour = "#";
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    colour += value.toString(16).padStart(2, "0");
+  }
+  return colour;
+};

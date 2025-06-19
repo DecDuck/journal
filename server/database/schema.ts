@@ -3,6 +3,7 @@ import {
   text,
   integer,
   primaryKey,
+  blob,
 } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
@@ -84,4 +85,13 @@ export const reply = sqliteTable("reply", {
   authorId: text("authorId")
     .notNull()
     .references(() => user.id),
+});
+
+export const adminKeys = sqliteTable("adminKeys", {
+  key: text("key").primaryKey(),
+  value: blob("value"),
+  type: text("type").notNull().default("string"),
+  lastUpdated: integer("lastUpdated", { mode: "timestamp" })
+    .notNull()
+    .default(new Date()),
 });

@@ -29,6 +29,8 @@ export default defineNuxtConfig({
     public: {
       whitelabel: {
         title: "Journal",
+        // No full stop
+        licenseText: "Licensed under GPLv3.0 or later",
       },
       turnstileSitekey: "1x00000000000000000000AA",
     },
@@ -47,6 +49,7 @@ export default defineNuxtConfig({
           src: "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
         },
       ],
+      link: [{ rel: "icon", href: "/favicon.ico" }],
     },
   },
 

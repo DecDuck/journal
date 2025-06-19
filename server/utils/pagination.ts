@@ -20,12 +20,17 @@ export function definePaginatedEndpoint<T extends object, V>(
     const query = getQuery(h3);
 
     const optionsQuery = validator(query);
+    if (optionsQuery instanceof ArkErrors)
+      throw createError({
+        statusCode: 400,
+        message: optionsQuery.summary,
+      });
 
     const paginationQuery = paginationValidator(query);
     if (paginationQuery instanceof ArkErrors)
       throw createError({
         statusCode: 400,
-        statusMessage: paginationQuery.summary,
+        message: paginationQuery.summary,
       });
 
     const pageSize = parseInt(paginationQuery.count ?? "10");

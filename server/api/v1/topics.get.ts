@@ -4,7 +4,7 @@ import { category, topic } from "~~/server/database/schema";
 import { usePermissionLevel } from "~~/server/utils/session";
 
 const FetchTopic = type({
-  id: "string",
+  categoryId: "string",
 });
 
 export default defineEventHandler(async (h3) => {
@@ -14,21 +14,16 @@ export default defineEventHandler(async (h3) => {
   const drizzle = useDrizzle();
   const permissionLevel = await usePermissionLevel(h3, drizzle);
 
-  const fetchedTopic = await first(
-    drizzle
-      .select()
-      .from(topic)
-      .where(
-        and(
-          eq(topic.id, options.id),
-          lte(category.readPermission, permissionLevel)
-        )
+  const topics = await drizzle
+    .select()
+    .from(topic)
+    .where(
+      and(
+        eq(topic.categoryId, options.categoryId),
+        lte(category.readPermission, permissionLevel)
       )
-      .innerJoin(category, eq(topic.categoryId, category.id))
-  );
+    )
+    .leftJoin(category, eq(topic.categoryId, category.id));
 
-  if (!fetchedTopic)
-    throw createError({ statusCode: 404, statusMessage: "Topic not found." });
-
-  return fetchedTopic;
+  return topics.map((e) => e.topic);
 });

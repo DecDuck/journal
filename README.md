@@ -7,6 +7,8 @@
 
 Journal is an open-source lightweight forum software designed to run exclusively on Cloudflare's workers, for cheap or free. It was originally built by the Drop OSS team to be used for their project, but was built with alternative whitelabelling options in mind.
 
+For the record, many of the pages here are **not final.**
+
 ## Forum Organisation
 
 Every forum likes to organise posts in their own way. This is how Journal does it:
