@@ -2,7 +2,7 @@ import { RegisterForm } from "~~/forms/register";
 import { readJournalValidatedBody } from "~~/server/validation";
 import { user, userSigninMethods } from "~~/server/database/schema";
 import { randomUUID } from "~~/server/utils/uuid";
-import * as jdenticon from "jdenticon";
+import jdenticon from "jdenticon";
 import type { SigninPasswordValidator } from "~~/server/utils/signinMethods";
 import { SigninMethod } from "~~/server/utils/signinMethods";
 import { hashPassword } from "~~/server/utils/password";

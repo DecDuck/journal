@@ -1,4 +1,4 @@
-import { FetchError } from "ofetch";
+import type { FetchError } from "ofetch";
 
 export async function validateTurnstile(token: string) {
   const runtimeConfig = useRuntimeConfig();
