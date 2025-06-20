@@ -120,6 +120,19 @@ const emit = defineEmits<{
   (e: "submit", value: unknown): void;
 }>();
 
+function makeEmpty(v: { type?: string }) {
+  switch (v.type) {
+    case undefined:
+    case "text":
+    case "password":
+      return "";
+  }
+  return undefined;
+}
+
+const empties = Object.fromEntries(
+  props.forminator.descriptions.map((e) => [e[0], makeEmpty(e[1])])
+);
 const dft = Object.fromEntries(
   props.dft
     ? Object.entries(props.dft).filter((e) => e[1] !== null)
@@ -128,7 +141,7 @@ const dft = Object.fromEntries(
         .map((e) => [e[0], e[1].default])
 );
 
-const result = ref<UnknownObject>(dft);
+const result = ref<UnknownObject>(Object.assign({}, empties, dft));
 
 const validationResult = computed<{ [key: string]: string }>(() => {
   const results = arkyZod(props.forminator.validator.safeParse(result.value));
