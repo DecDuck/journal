@@ -54,7 +54,10 @@
     <div v-if="formError" class="rounded-md bg-red-50 dark:bg-red-950 p-4">
       <div class="flex">
         <div class="shrink-0">
-          <XCircleIcon class="size-5 text-red-400 dark:text-red-600" aria-hidden="true" />
+          <XCircleIcon
+            class="size-5 text-red-400 dark:text-red-600"
+            aria-hidden="true"
+          />
         </div>
         <div class="ml-3">
           <h3 class="text-sm font-medium text-red-800 dark:text-red-600">
@@ -79,7 +82,10 @@
       </LoadingButton>
     </div>
 
-    <div v-if="formLoading" class="absolute inset-0 bg-white/30 dark:bg-zinc-900/30" />
+    <div
+      v-if="formLoading"
+      class="absolute inset-0 bg-white/30 dark:bg-zinc-900/30"
+    />
   </form>
 </template>
 
@@ -255,26 +261,24 @@ async function submit() {
 function submit_wrapper() {
   if (!validForm.value) return;
   formLoading.value = true;
-  submit()
-    .then(
-      (e) => {
-        result.value = dft;
+  const promise = submit();
+  promise.then((e) => {
+    result.value = dft;
 
-        emit("submit", e);
-      },
-      (e) => {
-        if (e instanceof FetchError) {
-          formError.value =
-            e.statusMessage ??
-            e.message ??
-            `An unknown error occurred. ${e.statusCode}`;
-          return;
-        }
-        formError.value = e;
-      }
-    )
-    .finally(() => {
-      formLoading.value = false;
-    });
+    emit("submit", e);
+  });
+  promise.catch((e) => {
+    if (e instanceof FetchError) {
+      formError.value =
+        e.statusMessage ??
+        e.message ??
+        `An unknown error occurred. ${e.statusCode}`;
+      return;
+    }
+    formError.value = e;
+  });
+  promise.finally(() => {
+    formLoading.value = false;
+  });
 }
 </script>

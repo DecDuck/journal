@@ -2,8 +2,8 @@
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold text-gray-900">Tags</h1>
-        <p class="mt-2 text-sm text-gray-700">
+        <h1 class="text-base font-semibold text-gray-900 dark:text-zinc-100">Tags</h1>
+        <p class="mt-2 text-sm text-gray-700 dark:text-zinc-300">
           Tags can be added by users to posts to add another level of
           organisation to their posts.
         </p>
@@ -24,12 +24,12 @@
           <div
             class="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg"
           >
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-300 dark:divide-zinc-600">
+              <thead class="bg-gray-50 dark:bg-zinc-800">
                 <tr>
                   <th
                     scope="col"
-                    class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                    class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                   >
                     Name
                   </th>
@@ -38,10 +38,10 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
+              <tbody class="divide-y divide-gray-200 dark:divide-zinc-700 bg-white dark:bg-zinc-900">
                 <tr v-for="tag in tags" :key="tag.id">
                   <td
-                    class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                    class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                   >
                     {{ tag.name }}
                   </td>

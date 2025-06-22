@@ -2,13 +2,13 @@
   <div v-if="category" class="px-4 sm:px-6 lg:px-8 space-y-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold text-gray-900">
+        <h1 class="text-base font-semibold text-gray-900 dark:text-zinc-100">
           {{ category.name }}
         </h1>
-        <p class="mt-2 text-sm text-gray-700">
+        <p class="mt-2 text-sm text-gray-700 dark:text-zinc-300">
           {{ category.description }}
         </p>
-        <p class="mt-1 text-zinc-500 text-xs">
+        <p class="mt-1 text-zinc-500 dark:text-zinc-400 text-xs">
           Read: {{ category.readPermission }} / Write:
           {{ category.writePermission }}
         </p>
@@ -35,11 +35,11 @@
     <!-- category editor -->
     <CategoryEditor v-model="categoryEditorOpen" :existing="category" />
     <!-- topics -->
-    <div class="px-4 sm:px-6 lg:px-8 py-8 border-1 border-gray-200 rounded-lg">
+    <div class="px-4 sm:px-6 lg:px-8 py-8 border-1 border-gray-200 dark:border-zinc-700 rounded-lg">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-          <h1 class="text-base font-semibold text-gray-900">Topics</h1>
-          <p class="mt-2 text-sm text-gray-700">
+          <h1 class="text-base font-semibold text-gray-900 dark:text-zinc-100">Topics</h1>
+          <p class="mt-2 text-sm text-gray-700 dark:text-zinc-300">
             Topics are organisation structures under categories. Each post must
             be under a topic.
           </p>
@@ -62,18 +62,18 @@
             <div
               class="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg"
             >
-              <table class="min-w-full divide-y divide-gray-300">
-                <thead class="bg-gray-50">
+              <table class="min-w-full divide-y divide-gray-300 dark:divide-zinc-600">
+                <thead class="bg-gray-50 dark:bg-zinc-800">
                   <tr>
                     <th
                       scope="col"
-                      class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                      class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                     >
                       Name
                     </th>
                     <th
                       scope="col"
-                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100"
                     >
                       Description
                     </th>
@@ -85,15 +85,15 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
+                <tbody class="divide-y divide-gray-200 dark:divide-zinc-700 bg-white dark:bg-zinc-900">
                   <tr v-for="topic in topics" :key="topic.id">
                     <td
-                      class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                      class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                     >
                       {{ topic.name }}
                     </td>
                     <td
-                      class="truncate px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+                      class="truncate px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-zinc-400"
                     >
                       {{ topic.description }}
                     </td>

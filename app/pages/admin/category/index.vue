@@ -31,31 +31,31 @@
                 <tr>
                   <th
                     scope="col"
-                    class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                    class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                   >
                     Name
                   </th>
                   <th
                     scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100"
                   >
                     Description
                   </th>
                   <th
                     scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100"
                   >
                     Read
                   </th>
                   <th
                     scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100"
                   >
                     Post
                   </th>
                   <th
                     scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100"
                   >
                     Repository
                   </th>
@@ -64,25 +64,25 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
+              <tbody class="divide-y divide-gray-200 dark:divide-zinc-700 bg-white dark:bg-zinc-900">
                 <tr v-for="category in categories" :key="category.id">
                   <td
-                    class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                    class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                   >
                     {{ category.name }}
                   </td>
                   <td
-                    class="truncate px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+                    class="truncate px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-zinc-400"
                   >
                     {{ category.description }}
                   </td>
-                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-zinc-400">
                     {{ category.readPermission }}
                   </td>
-                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-zinc-400">
                     {{ category.writePermission }}
                   </td>
-                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-zinc-400">
                     {{ category.repository ?? "N/A" }}
                   </td>
                   <td

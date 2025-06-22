@@ -49,7 +49,7 @@
     </div>
     <div class="overflow-hidden relative max-h-[11rem]">
       <div class="prose prose-sm prose-invert prose-blue" v-html="micromark(post.content)" />
-      <div class="absolute inset-0 bg-linear-to-b from-transparent to-zinc-900" />
+      <div class="absolute inset-0 bg-linear-to-b from-transparent to-white dark:to-zinc-900" />
     </div>
     <NuxtLink class="absolute inset-0" :href="`/post/${post.id}`" />
   </article>

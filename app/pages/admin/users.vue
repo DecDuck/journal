@@ -2,8 +2,8 @@
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold text-gray-900">Users</h1>
-        <p class="mt-2 text-sm text-gray-700">
+        <h1 class="text-base font-semibold text-gray-900 dark:text-zinc-100">Users</h1>
+        <p class="mt-2 text-sm text-gray-700 dark:text-zinc-300">
           They use.
         </p>
       </div>
@@ -28,33 +28,33 @@
               <div
                 class="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg"
               >
-                <table class="min-w-full divide-y divide-gray-300">
-                  <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+                  <thead class="bg-gray-50 dark:bg-zinc-800">
                     <tr>
                       <th scope="col" class="relative w-9">
                         <span class="sr-only">Avatar</span>
                       </th>
                       <th
                         scope="col"
-                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         Display Name
                       </th>
                       <th
                         scope="col"
-                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         Username
                       </th>
                       <th
                         scope="col"
-                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         Email
                       </th>
                       <th
                         scope="col"
-                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         Permission
                       </th>
@@ -66,7 +66,7 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="divide-y divide-gray-200 bg-white">
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-zinc-900">
                     <tr
                       v-for="user in (data.results as Array<SerializeObject<User>>)"
                       :key="user.id"
@@ -80,22 +80,22 @@
                         />
                       </td>
                       <td
-                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         {{ user.displayName }}
                       </td>
                       <td
-                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         {{ user.username }}
                       </td>
                       <td
-                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         {{ user.email }}
                       </td>
                       <td
-                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
+                        class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-zinc-100 sm:pl-6"
                       >
                         {{ user.permissionLevel }}
                       </td>

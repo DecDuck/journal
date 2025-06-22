@@ -20,10 +20,10 @@
           class="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1"
         >
           <div class="mt-6 min-w-0 flex-1 sm:hidden md:block">
-            <h1 class="truncate text-2xl font-bold text-gray-900">
+            <h1 class="truncate text-2xl font-bold text-gray-900 dark:text-zinc-100">
               {{ user.displayName }}
             </h1>
-            <p class="text-sm text-zinc-400">@{{ user.username }}</p>
+            <p class="text-sm text-zinc-400 dark:text-zinc-500">@{{ user.username }}</p>
           </div>
         </div>
       </div>
