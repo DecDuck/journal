@@ -1,11 +1,12 @@
 <template>
   <Combobox v-model="model" as="div" @update:model-value="query = ''">
-    <ComboboxLabel class="block text-sm/6 font-medium text-gray-900"
+    <ComboboxLabel
+      class="block text-sm/6 font-medium text-gray-900 dark:text-zinc-100"
       >Topic</ComboboxLabel
     >
     <div class="relative mt-2">
       <ComboboxInput
-        class="block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
+        class="block w-full rounded-md bg-white dark:bg-zinc-900 py-1.5 pr-12 pl-3 text-base text-gray-900 dark:text-zinc-100 outline-1 -outline-offset-1 outline-gray-300 dark:outline-zinc-700 placeholder:text-gray-400 dark:placeholder:text-zinc-600 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
         :display-value="() => model?.name ?? ''"
         placeholder="Topic"
         @change="query = $event.target.value"
@@ -42,7 +43,7 @@
 
       <ComboboxOptions
         v-if="filteredTopics.length > 0"
-        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm"
+        class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-zinc-900 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/5 focus:outline-hidden sm:text-sm"
       >
         <ComboboxOption
           v-for="topic in filteredTopics"
@@ -56,7 +57,7 @@
               'relative cursor-default py-2 pr-9 pl-3 select-none',
               active
                 ? 'bg-blue-600 text-white outline-hidden'
-                : 'text-gray-900',
+                : 'text-gray-900 dark:text-zinc-100',
             ]"
           >
             <span :class="['block truncate', selected && 'font-semibold']">

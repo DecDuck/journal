@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1 class="text-center text-xl font-bold"><slot /></h1>
-    <form class="mt-4 grid grid-cols-1 bg-zinc-100 rounded-lg shadow-sm">
+    <h1 class="text-center text-gray-900 dark:text-zinc-100 text-xl font-bold"><slot /></h1>
+    <form class="mt-4 grid grid-cols-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-sm">
       <input
         v-model="delayedQuery"
-        class="col-start-1 row-start-1 h-12 w-full pr-4 pl-11 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm"
+        class="col-start-1 row-start-1 h-12 w-full pr-4 pl-11 text-base text-gray-900 dark:text-zinc-100 outline-hidden placeholder:text-gray-400 dark:placeholder:text-zinc-600 sm:text-sm"
         placeholder="Search..."
       />
       <MagnifyingGlassIcon

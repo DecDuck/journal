@@ -6,7 +6,7 @@
       <Switch
         v-model="viewing"
         :class="[
-          viewing ? 'bg-blue-600' : 'bg-gray-200',
+          viewing ? 'bg-blue-600' : 'bg-gray-200 dark:bg-zinc-800',
           'relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-hidden',
         ]"
       >
@@ -30,7 +30,7 @@
           ref="contentEditor"
           v-model="model"
           placeholder="Edit..."
-          class="flex-1 px-2 py-1 rounded-md bg-zinc-50 border border-zinc-300 text-zinc-900 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
+          class="flex-1 px-2 py-1 rounded-md bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
           required
           @keydown="handleContentKeydown"
         />
@@ -39,10 +39,10 @@
       <!-- Preview -->
       <div v-else class="flex flex-col h-full">
         <div
-          class="flex-1 px-2 py-1 rounded-md bg-white border border-zinc-300 overflow-y-auto"
+          class="flex-1 px-2 py-1 rounded-md bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 overflow-y-auto"
         >
           <div
-            class="prose prose-blue prose-sm h-full overflow-y-auto"
+            class="prose prose-blue prose-sm dark:prose-invert h-full overflow-y-auto"
             v-html="markdownPreview"
           />
         </div>

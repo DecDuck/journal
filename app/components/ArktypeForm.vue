@@ -10,7 +10,7 @@
     >
       <label
         :for="fieldName"
-        class="block text-sm/6 font-medium text-gray-900"
+        class="block text-sm/6 font-medium text-gray-900 dark:text-gray-100"
         >{{ options.name }}</label
       >
       <div class="mt-2">
@@ -23,7 +23,7 @@
           :autocomplete="fieldName"
           :placeholder="options.placeholder"
           :required="options.default !== undefined"
-          class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
+          class="block w-full rounded-md bg-white dark:bg-zinc-900 px-3 py-1.5 text-base text-gray-900 dark:text-gray-100 outline-1 -outline-offset-1 outline-gray-300 dark:outline-zinc-800 placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
         />
         <component
           :is="specialEditors[options.type]"
@@ -37,27 +37,27 @@
         :class="[
           'text-xs/6 mt-1 leading-4',
           validationResult[fieldName] && result[fieldName]
-            ? 'text-red-600'
-            : 'text-gray-500',
+            ? 'text-red-600 dark:text-red-500'
+            : 'text-gray-500 dark:text-gray-400',
         ]"
       >
         {{ options.description }}
       </p>
       <p
         v-else-if="validationResult[fieldName] && result[fieldName]"
-        class="text-xs/6 mt-1 leading-4 text-red-600"
+        class="text-xs/6 mt-1 leading-4 text-red-600 dark:text-red-500"
       >
         {{ validationResult[fieldName] }}
       </p>
     </div>
 
-    <div v-if="formError" class="rounded-md bg-red-50 p-4">
+    <div v-if="formError" class="rounded-md bg-red-50 dark:bg-red-950 p-4">
       <div class="flex">
         <div class="shrink-0">
-          <XCircleIcon class="size-5 text-red-400" aria-hidden="true" />
+          <XCircleIcon class="size-5 text-red-400 dark:text-red-600" aria-hidden="true" />
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">
+          <h3 class="text-sm font-medium text-red-800 dark:text-red-600">
             {{ formError }}
           </h3>
         </div>
@@ -79,7 +79,7 @@
       </LoadingButton>
     </div>
 
-    <div v-if="formLoading" class="absolute inset-0 bg-white/30" />
+    <div v-if="formLoading" class="absolute inset-0 bg-white/30 dark:bg-zinc-900/30" />
   </form>
 </template>
 

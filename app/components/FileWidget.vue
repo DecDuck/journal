@@ -2,9 +2,11 @@
   <component
     :is="props.downloadUrl ? NuxtLink : 'div'"
     :class="[
-      'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow ',
-      toolarge ? 'ring-1 ring-red-600' : 'ring-1 ring-black/5',
-      props.downloadUrl ? 'hover:bg-zinc-50' : ''
+      'pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white dark:bg-zinc-900 shadow',
+      toolarge
+        ? 'ring-1 ring-red-600 dark:ring-red-500'
+        : 'ring-1 ring-black/5 dark:ring-white/5',
+      props.downloadUrl ? 'hover:bg-zinc-50 dark:hover:bg-zinc-800' : '',
     ]"
     :href="props.downloadUrl"
     target="_blank"
@@ -16,18 +18,22 @@
             :is="
               mimeTypeIcons[file.type.split('/').at(0) ?? ''] ?? PaperClipIcon
             "
-            class="size-6 text-zinc-400"
+            class="size-6 text-zinc-400 dark:text-zinc-600"
             aria-hidden="true"
           />
         </div>
         <div class="ml-3 w-0 flex-1 pt-0.5">
-          <p class="truncate text-sm font-medium text-gray-900">
+          <p
+            class="truncate text-sm font-medium text-gray-900 dark:text-zinc-100"
+          >
             {{ file.filename }}
-            <span class="text-zinc-400">{{ formatBytes(file.size) }}</span>
+            <span class="text-zinc-400 dark:text-zinc-600">{{
+              formatBytes(file.size)
+            }}</span>
           </p>
           <p
             v-if="toolarge"
-            class="mt-1 inline-flex items-center gap-x-1 text-red-600 text-[10px]"
+            class="mt-1 inline-flex items-center gap-x-1 text-red-600 dark:text-red-500 text-[10px]"
           >
             <ExclamationCircleIcon class="size-4" />
             File too large. Must be &lt;{{
@@ -38,7 +44,7 @@
         <div v-if="props.remove" class="ml-4 flex shrink-0">
           <button
             type="button"
-            class="cursor-pointer inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-hidden"
+            class="cursor-pointer inline-flex rounded-md bg-white dark:bg-zinc-900 text-gray-400 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-hidden"
             @click="() => props.remove!()"
           >
             <span class="sr-only">Close</span>

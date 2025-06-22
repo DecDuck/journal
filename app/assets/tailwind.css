@@ -4,3 +4,9 @@
 @theme {
   --font-sans: "Inter", "sans";
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: oklch(21% 0.006 285.885);
+  }
+}

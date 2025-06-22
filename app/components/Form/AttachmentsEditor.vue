@@ -3,7 +3,7 @@
     <div class="flex flex-row gap-x-3 items-center">
       <button
         tabindex="0"
-        class="bg-zinc-100 hover:bg-zinc-200 cursor-pointer inline-flex min-h-9 items-center justify-center rounded-md gap-x-2 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        class="bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-gray-900 dark:text-zinc-100 cursor-pointer inline-flex min-h-9 items-center justify-center rounded-md gap-x-2 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         @click.prevent="() => input?.click()"
       >
         <ArrowUpTrayIcon class="size-4" />
@@ -19,7 +19,7 @@
       />
       <p
         v-if="toolarge"
-        class="inline-flex items-center gap-x-1 text-red-600 text-sm"
+        class="inline-flex items-center gap-x-1 text-red-600 dark:text-red-500 text-sm"
       >
         <ExclamationCircleIcon class="size-6" />
         Files too large. Must be &lt;{{ formatBytes(maxTotal) }} combined.

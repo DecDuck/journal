@@ -4,7 +4,7 @@
       <slot :data="value" />
     </div>
     <div
-      class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+      class="flex items-center justify-between border-t border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-3 sm:px-6"
     >
       <div class="flex flex-1 justify-between items-center sm:hidden">
         <LoadingButton
@@ -26,7 +26,7 @@
       </div>
       <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p class="text-sm text-gray-700">
+          <p class="text-sm text-gray-700 dark:text-zinc-400">
             Showing
             {{ " " }}
             <span class="font-medium">{{ page + 1 }}</span>

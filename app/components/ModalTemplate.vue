@@ -30,7 +30,7 @@
           >
             <div
               :class="[
-                'overflow-hidden relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full',
+                'overflow-hidden relative transform rounded-lg bg-white dark:bg-zinc-900 text-left shadow-xl transition-all sm:my-8 sm:w-full',
                 props.sizeClass ?? 'sm:max-w-lg',
               ]"
             >
@@ -38,7 +38,7 @@
                 <slot />
               </div>
               <div
-                class="rounded-b-lg bg-zinc-100 px-4 py-3 sm:flex sm:gap-x-2 sm:flex-row-reverse sm:px-6"
+                class="rounded-b-lg bg-zinc-100 dark:bg-zinc-800 px-4 py-3 sm:flex sm:gap-x-2 sm:flex-row-reverse sm:px-6"
               >
                 <slot name="buttons" :close="close" />
               </div>

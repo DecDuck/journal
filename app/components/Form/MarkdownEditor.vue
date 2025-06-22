@@ -8,7 +8,7 @@
         v-for="shortcut in markdownShortcuts"
         :key="shortcut.label"
         type="button"
-        class="cursor-pointer px-2 py-1 text-sm rounded bg-zinc-100 text-zinc-900 hover:bg-zinc-300 transition-colors"
+        class="cursor-pointer px-2 py-1 text-sm rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors"
         @click="applyMarkdown(shortcut)"
       >
         {{ shortcut.label }}
@@ -23,7 +23,7 @@
           id="content"
           ref="contentEditor"
           v-model="model"
-          class="flex-1 px-2 py-1 rounded-md bg-white border border-zinc-300 text-zinc-900 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
+          class="flex-1 px-2 py-1 rounded-md bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 focus:border-blue-500 focus:ring-blue-500 font-mono resize-none"
           @keydown="handleContentKeydown"
         />
       </div>
@@ -32,10 +32,10 @@
       <div class="flex flex-col">
         <span class="text-sm text-zinc-500 mb-2">Preview</span>
         <div
-          class="flex-1 p-4 rounded-md bg-white border border-zinc-300 overflow-y-auto"
+          class="flex-1 p-4 rounded-md bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 overflow-y-auto"
         >
           <div
-            class="prose prose-blue prose-sm h-full overflow-y-auto"
+            class="prose prose-blue dark:prose-invert prose-sm h-full overflow-y-auto"
             v-html="markdownPreview"
           />
         </div>

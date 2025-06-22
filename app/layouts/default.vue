@@ -8,7 +8,7 @@
     ```
   -->
   <div class="min-h-screen flex flex-col flex-col-reverse">
-    <footer class="bg-white">
+    <footer>
       <div
         class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8"
       >
@@ -20,7 +20,7 @@
             v-for="item in footer"
             :key="item.name"
             :href="item.href"
-            class="text-gray-600 hover:text-gray-900"
+            class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
             >{{ item.name }}</NuxtLink
           >
         </nav>
@@ -32,19 +32,19 @@
             v-for="item in social"
             :key="item.name"
             :href="item.href"
-            class="text-gray-600 hover:text-gray-800"
+            class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
             target="_blank"
           >
             <span class="sr-only">{{ item.name }}</span>
             <component :is="item.icon" class="size-6" aria-hidden="true" />
           </NuxtLink>
         </div>
-        <p class="mt-10 text-center text-sm/6 text-gray-600">
+        <p class="mt-10 text-center text-sm/6 text-gray-600 dark:text-gray-500">
           &copy; {{ new Date().getFullYear() }}
           {{ runtimeConfig.public.whitelabel.title }}.
-          {{ runtimeConfig.public.whitelabel.licenseText }}. Based on
+          {{ runtimeConfig.public.whitelabel.licenseText }}. Powered by
           <NuxtLink
-            class="text-gray-700 hover:underline"
+            class="text-gray-700 dark:text-gray-400 hover:underline"
             to="https://github.com/DecDuck/journal"
             target="_blank"
             >Journal</NuxtLink
@@ -55,7 +55,7 @@
 
     <main class="grow">
       <div class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 py-4">
-        <div class="rounded-lg bg-white px-5 py-6 sm:px-6">
+        <div class="rounded-lg   px-5 py-6 sm:px-6">
           <slot />
         </div>
       </div>

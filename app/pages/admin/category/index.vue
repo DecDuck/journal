@@ -2,8 +2,8 @@
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
-        <h1 class="text-base font-semibold text-gray-900">Categories</h1>
-        <p class="mt-2 text-sm text-gray-700">
+        <h1 class="text-base font-semibold text-gray-900 dark:text-zinc-100">Categories</h1>
+        <p class="mt-2 text-sm text-gray-700 dark:text-zinc-400">
           Categories are the main organisation unit in Journal. Each category
           contains a series of "topics", which under users can make posts.
           Categories can also be tied to GitHub repositories, and can be marked
@@ -26,8 +26,8 @@
           <div
             class="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg"
           >
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-300 dark:divide-zinc-700">
+              <thead class="bg-gray-50 dark:bg-zinc-800">
                 <tr>
                   <th
                     scope="col"

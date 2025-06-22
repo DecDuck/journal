@@ -1,7 +1,7 @@
 <template>
   <NuxtRouteAnnouncer />
   <NuxtLoadingIndicator />
-  <NuxtLayout>
+  <NuxtLayout class="dark">
     <NuxtPage />
   </NuxtLayout>
   <NotificationStack />

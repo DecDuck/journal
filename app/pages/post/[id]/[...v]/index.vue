@@ -4,7 +4,10 @@
       <ol role="list" class="flex items-center space-x-4">
         <li>
           <div>
-            <NuxtLink href="/" class="text-gray-400 hover:text-gray-500">
+            <NuxtLink
+              href="/"
+              class="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
+            >
               <HomeIcon class="size-5 shrink-0" aria-hidden="true" />
               <span class="sr-only">Home</span>
             </NuxtLink>
@@ -13,12 +16,12 @@
         <li v-for="page in pages" :key="page.name">
           <div class="flex items-center">
             <ChevronRightIcon
-              class="size-5 shrink-0 text-gray-400"
+              class="size-5 shrink-0 text-gray-400 dark:text-gray-500"
               aria-hidden="true"
             />
             <NuxtLink
               :href="page.href"
-              class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+              class="ml-4 text-sm font-medium text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
               >{{ page.name }}</NuxtLink
             >
           </div>
@@ -27,10 +30,10 @@
     </nav>
 
     <div>
-      <h1 class="text-4xl font-semibold">{{ post.title }}</h1>
+      <h1 class="text-4xl font-semibold text-gray-900 dark:text-zinc-100">{{ post.title }}</h1>
 
       <div class="mt-2 flex items-center gap-x-2 text-xs">
-        <time :datetime="post.createdAt" class="text-gray-500"
+        <time :datetime="post.createdAt" class="text-gray-500 dark:text-gray-400"
           >Posted {{ relativeTime(post.createdAt) }}</time
         >
         <NuxtLink
@@ -50,10 +53,10 @@
           <div class="flex flex-col items-center">
             <img
               :src="useObject(author.avatar)"
-              class="ring-[2px] lg:p-1 ring-zinc-200 size-6 lg:size-12 rounded-full"
+              class="ring-[2px] lg:p-1 ring-zinc-200 dark:ring-zinc-700 size-6 lg:size-12 rounded-full"
             />
-            <div class="w-[2px] bg-zinc-200 h-full" />
-            <div class="size-3 aspect-square rounded-full bg-zinc-200" />
+            <div class="w-[2px] bg-zinc-200 dark:bg-zinc-700 h-full" />
+            <div class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700" />
           </div>
           <div class="flex-1 w-full">
             <PostReplyContent
@@ -68,10 +71,10 @@
           <div class="flex flex-col items-center">
             <img
               :src="useObject(reply.author.avatar)"
-              class="ring-[2px] p-1 ring-zinc-200 size-12 rounded-full"
+              class="ring-[2px] p-1 ring-zinc-200 dark:ring-zinc-700 size-12 rounded-full"
             />
-            <div class="w-[2px] bg-zinc-200 h-full" />
-            <div class="size-3 aspect-square rounded-full bg-zinc-200" />
+            <div class="w-[2px] bg-zinc-200 dark:bg-zinc-700 h-full" />
+            <div class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700" />
           </div>
           <div class="flex-1 w-full">
             <PostReplyContent
@@ -98,17 +101,17 @@
                 'absolute top-0 left-0 flex w-6 justify-center',
               ]"
             >
-              <div class="w-px bg-gray-200" />
+              <div class="w-px bg-gray-200 dark:bg-zinc-700" />
             </div>
             <div
-              class="relative flex size-6 flex-none items-center justify-center bg-white"
+              class="relative flex size-6 flex-none items-center justify-center bg-white dark:bg-zinc-900"
             >
               <div
-                class="size-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"
+                class="size-1.5 rounded-full bg-gray-100 dark:bg-zinc-800 ring-1 ring-gray-300 dark:ring-zinc-600"
               />
             </div>
             <p
-              class="inline-flex items-center gap-x-1 py-0.5 text-xs/5 text-gray-600"
+              class="inline-flex items-center gap-x-1 py-0.5 text-xs/5 text-gray-600 dark:text-zinc-400"
             >
               <img
                 :src="useObject(activityItem.author.avatar)"
@@ -116,14 +119,14 @@
               />
               <NuxtLink
                 :href="`/user/${activityItem.author.id}`"
-                class="font-medium text-gray-900 hover:underline"
+                class="font-medium text-gray-900 dark:text-zinc-100 hover:underline"
                 >{{ activityItem.author.displayName }}</NuxtLink
               >
               {{ activityItem.type }}.
             </p>
             <time
               :datetime="activityItem.createdAt"
-              class="flex-none py-0.5 text-xs/5 text-gray-400"
+              class="flex-none py-0.5 text-xs/5 text-gray-400 dark:text-zinc-600"
               >{{ relativeTime(activityItem.createdAt) }}</time
             >
           </li>
@@ -139,11 +142,11 @@
         @submit="(reply) => onReply(reply)"
       />
     </div>
-    <div v-else class="shadow-sm p-4 rounded-lg text-sm bg-zinc-50">
+    <div v-else class="shadow-sm p-4 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
       <p>
         <NuxtLink
           href="/signin"
-          class="text-blue-600 hover:underline hover:text-blue-500"
+          class="hover:underline text-blue-600 dark:text-blue-500 hover:text-blue-500 dark:hover:text-blue-600"
           >Sign in &rarr;</NuxtLink
         >
         to reply to this conversation.

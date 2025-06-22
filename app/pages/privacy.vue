@@ -2,15 +2,15 @@
 <template>
   <div>
     <div class="max-w-xl mx-auto">
-      <p class="text-base/7 font-semibold text-blue-600">
+      <p class="text-base/7 font-semibold text-blue-600 dark:text-blue-500">
         {{ runtimeConfig.public.whitelabel.title }}
       </p>
       <h1
-        class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl"
+        class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 dark:text-zinc-100 sm:text-5xl"
       >
         Privacy Policy
       </h1>
-      <div class="mt-4 prose prose-sm prose-blue max-w-none" v-html="privacyPolicyHTML" />
+      <div class="mt-4 prose prose-sm prose-blue dark:prose-invert max-w-none" v-html="privacyPolicyHTML" />
     </div>
   </div>
 </template>
