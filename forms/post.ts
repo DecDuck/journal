@@ -7,7 +7,7 @@ const maxTotal = 10 * 1024 * 1024; // 10 MB
 export const PostForm = Forminator(
   z.object({
     title: z.string().nonempty(),
-    content: z.string().nonempty(),
+    content: z.string().nonempty().max(5000),
     tags: z.array(z.string()),
     attachments: z
       .array(z.unknown())
@@ -41,7 +41,7 @@ export const PostForm = Forminator(
       type: "markdown",
       placeholder: "I was... ",
       description:
-        "Your post body. Outline everything you want to address in your post. ",
+        "Your post body. Outline everything you want to address in your post. <5000 characters",
     },
     tags: {
       name: "Tags",

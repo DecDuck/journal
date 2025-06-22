@@ -8,7 +8,7 @@
     >
     <PermissionBadge :level="author.permissionLevel" />
   </p>
-  <div class="mt-1 prose prose-blue dark:prose-invert" v-html="content" />
+  <div class="mt-1 prose prose-blue dark:prose-invert wrap-break-word" v-html="content" />
 
   <div class="mt-8 py-4 border-t border-zinc-200 dark:border-zinc-700">
     <div

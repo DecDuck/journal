@@ -6,7 +6,7 @@ const maxTotal = 10 * 1024 * 1024; // 10 MB
 
 export const ReplyForm = Forminator(
   z.object({
-    content: z.string().nonempty(),
+    content: z.string().nonempty().max(5000),
     attachments: z
       .array(z.unknown())
       .optional()
@@ -32,7 +32,7 @@ export const ReplyForm = Forminator(
       type: "shortMarkdown",
       placeholder: "I was... ",
       description:
-        "Your reply body. Outline everything you want to address in your reply. ",
+        "Your reply body. Outline everything you want to address in your reply. <5000 characters.",
     },
     attachments: {
       name: "Attachments",
