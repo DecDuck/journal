@@ -30,10 +30,14 @@
     </nav>
 
     <div>
-      <h1 class="text-4xl font-semibold text-gray-900 dark:text-zinc-100">{{ post.title }}</h1>
+      <h1 class="text-4xl font-semibold text-gray-900 dark:text-zinc-100">
+        {{ post.title }}
+      </h1>
 
       <div class="mt-2 flex items-center gap-x-2 text-xs">
-        <time :datetime="post.createdAt" class="text-gray-500 dark:text-gray-400"
+        <time
+          :datetime="post.createdAt"
+          class="text-gray-500 dark:text-gray-400"
           >Posted {{ relativeTime(post.createdAt) }}</time
         >
         <NuxtLink
@@ -56,7 +60,9 @@
               class="ring-[2px] lg:p-1 ring-zinc-200 dark:ring-zinc-700 size-6 lg:size-12 rounded-full"
             />
             <div class="w-[2px] bg-zinc-200 dark:bg-zinc-700 h-full" />
-            <div class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            <div
+              class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700"
+            />
           </div>
           <div class="flex-1 w-full">
             <PostReplyContent
@@ -74,7 +80,9 @@
               class="ring-[2px] p-1 ring-zinc-200 dark:ring-zinc-700 size-12 rounded-full"
             />
             <div class="w-[2px] bg-zinc-200 dark:bg-zinc-700 h-full" />
-            <div class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            <div
+              class="size-3 aspect-square rounded-full bg-zinc-200 dark:bg-zinc-700"
+            />
           </div>
           <div class="flex-1 w-full">
             <PostReplyContent
@@ -142,7 +150,10 @@
         @submit="(reply) => onReply(reply)"
       />
     </div>
-    <div v-else class="shadow-sm p-4 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+    <div
+      v-else
+      class="shadow-sm p-4 rounded-lg text-sm bg-zinc-50 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+    >
       <p>
         <NuxtLink
           href="/signin"
@@ -180,9 +191,9 @@ useHead({
 const user = useUser();
 
 const categories = await useCategories();
-const category = categories.value.find((e) => e.id === post.categoryId)!;
+const category = categories.value.find((e) => e.id === post.categoryId);
 const topics = await useTopics(post.categoryId);
-const topic = topics.value.find((e) => e.id === post.topicId)!;
+const topic = topics.value.find((e) => e.id === post.topicId);
 
 if (!route.params.v) {
   router.replace(
@@ -198,12 +209,12 @@ const postTags = tags.value.filter((e) => rawPostTags.includes(e.id));
 
 const pages = [
   {
-    name: category.name,
-    href: `/category/${category.id}`,
+    name: category?.name ?? "Unknown category",
+    href: category ? `/category/${category.id}` : "#",
   },
   {
-    name: topic.name,
-    href: `/topic/${topic.id}`,
+    name: topic?.name ?? "Unknown topic",
+    href: topic ? `/topic/${topic.id}` : "#",
   },
 ];
 
