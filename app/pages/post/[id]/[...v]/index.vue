@@ -68,6 +68,8 @@
             <span class="font-mono text-zinc-100">
               {{ category }}
 
+              /
+
               {{ topic }}
             </span>
             <PostReplyContent
