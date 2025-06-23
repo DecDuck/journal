@@ -196,11 +196,12 @@ const topics = await useTopics(post.categoryId);
 const topic = topics.value.find((e) => e.id === post.topicId);
 
 if (!route.params.v) {
-  router.replace(
-    `/post/${post.id}/${post.title
+  router.replace({
+    path: `/post/${post.id}/${post.title
       .toLowerCase()
-      .replaceAll(/[^a-zA-Z\d]/g, "-")}`
-  );
+      .replaceAll(/[^a-zA-Z\d]/g, "-")}`,
+    replace: true,
+  });
 }
 
 const tags = await useTags();
