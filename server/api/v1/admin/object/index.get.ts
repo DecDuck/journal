@@ -4,12 +4,12 @@ export default defineEventHandler(async (h3) => {
 
   const blob = hubBlob();
 
-  const blobs = [];
+  let blobs = 0;
   let cursor = undefined;
 
   do {
     const res = await blob.list({ cursor });
-    blobs.push(...res.blobs);
+    blobs = +res.blobs.length;
     cursor = res.cursor;
   } while (cursor);
 

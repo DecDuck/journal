@@ -52,7 +52,7 @@ useHead({
   title: "Manage",
 });
 
-const objectsLength = ref((await $journalFetch("/api/v1/admin/object")).length);
+const objectsLength = ref(await $journalFetch("/api/v1/admin/object"));
 
 const cleanLoading = ref(false);
 
