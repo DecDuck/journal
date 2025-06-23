@@ -249,6 +249,7 @@ import {
   Cog6ToothIcon,
   HomeIcon,
   InboxStackIcon,
+  ServerStackIcon,
   TagIcon,
   UserGroupIcon,
   XMarkIcon,
@@ -271,6 +272,11 @@ const navigation = computed(() => {
       name: "Tags",
       href: "/admin/tag",
       icon: TagIcon,
+    },
+    {
+      name: "Manage",
+      href: "/admin/manage",
+      icon: ServerStackIcon,
     },
     {
       name: "Settings",
