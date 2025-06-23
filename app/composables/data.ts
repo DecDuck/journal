@@ -11,7 +11,7 @@ export const useCategories = async () => {
     () => null as unknown as []
   );
   if (state.value === null) {
-    const categories = await $journalFetch("/api/v1/category");
+    const categories = await $fetch("/api/v1/category");
     state.value = categories;
   }
   return state;
@@ -24,7 +24,7 @@ export const useTags = async () => {
     () => null as unknown as []
   );
   if (state.value === null) {
-    const categories = await $journalFetch("/api/v1/tags");
+    const categories = await $fetch("/api/v1/tags");
     state.value = categories;
   }
   return state;
@@ -36,7 +36,7 @@ export const useTopics = async (id: string) => {
     () => ({})
   );
   if (state.value[id] === undefined) {
-    const topics = await $journalFetch<Array<SerializeObject<Topic>>>(
+    const topics = await $fetch<Array<SerializeObject<Topic>>>(
       "/api/v1/topics",
       {
         query: { categoryId: id },
@@ -52,7 +52,7 @@ export const usePrivacyPolicy = async () => {
   // @ts-expect-error
   const state = useState<string | undefined>("privacyPolicy", () => null);
   if (state.value === null) {
-    state.value = await $journalFetch("/api/v1/privacy");
+    state.value = await $fetch("/api/v1/privacy");
   }
 
   return state;
@@ -63,7 +63,7 @@ export const useCodeOfConduct = async () => {
   // @ts-expect-error
   const state = useState<string | undefined>("conduct", () => null);
   if (state.value === null) {
-    state.value = await $journalFetch("/api/v1/conduct");
+    state.value = await $fetch("/api/v1/conduct");
   }
 
   return state;
@@ -74,7 +74,7 @@ export const useAbout = async () => {
   // @ts-expect-error
   const state = useState<string | undefined>("about", () => null);
   if (state.value === null) {
-    state.value = await $journalFetch("/api/v1/about");
+    state.value = await $fetch("/api/v1/about");
   }
 
   return state;
