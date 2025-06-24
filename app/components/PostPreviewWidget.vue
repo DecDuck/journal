@@ -2,7 +2,9 @@
 <template>
   <article class="relative group cursor-pointer shadow-sm px-4 py-3 rounded">
     <div class="flex flex-wrap items-center gap-x-3">
-      <h1 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-500 dark:group-hover:text-zinc-300">
+      <h1
+        class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-500 dark:group-hover:text-zinc-300"
+      >
         {{ post.title }}
       </h1>
       <p class="text-sm text-zinc-400 dark:text-zinc-500">
@@ -11,11 +13,16 @@
     </div>
     <div v-if="user" class="inline-flex items-center gap-x-1">
       <img :src="useObject(user.avatar)" class="size-4 rounded-full" />
-      <p class="text-xs text-zinc-600 dark:text-zinc-400">{{ user.displayName }}</p>
+      <p class="text-xs text-zinc-600 dark:text-zinc-400">
+        {{ user.displayName }}
+      </p>
     </div>
     <div class="py-1">
       <nav class="flex" aria-label="Breadcrumb">
-        <ol role="list" class="flex items-center space-x-1 text-gray-400 dark:text-gray-500">
+        <ol
+          role="list"
+          class="flex items-center space-x-1 text-gray-400 dark:text-gray-500"
+        >
           <li>
             <div>
               <HomeIcon class="size-4 shrink-0" aria-hidden="true" />
@@ -24,10 +31,7 @@
           </li>
           <li>
             <div class="flex items-center">
-              <ChevronRightIcon
-                class="size-4 shrink-0"
-                aria-hidden="true"
-              />
+              <ChevronRightIcon class="size-4 shrink-0" aria-hidden="true" />
               <div class="ml-1 text-sm font-medium">
                 {{ category.name }}
               </div>
@@ -35,10 +39,7 @@
           </li>
           <li>
             <div class="flex items-center">
-              <ChevronRightIcon
-                class="size-4 shrink-0"
-                aria-hidden="true"
-              />
+              <ChevronRightIcon class="size-4 shrink-0" aria-hidden="true" />
               <div class="ml-1 text-sm font-medium">
                 {{ topic.name }}
               </div>
@@ -48,8 +49,10 @@
       </nav>
     </div>
     <div class="overflow-hidden relative max-h-[11rem]">
-      <div class="prose prose-sm prose-invert prose-blue" v-html="micromark(post.content)" />
-      <div class="absolute inset-0 bg-linear-to-b from-transparent to-white dark:to-zinc-900" />
+      <div class="prose prose-sm prose-invert prose-blue" v-html="content" />
+      <div
+        class="absolute inset-0 bg-linear-to-b from-transparent to-white dark:to-zinc-900"
+      />
     </div>
     <NuxtLink class="absolute inset-0" :href="`/post/${post.id}`" />
   </article>
@@ -61,10 +64,12 @@ import { micromark } from "micromark";
 import type { SerializeObject } from "nitropack";
 import type { Category, Post, Topic, User } from "~~/server/utils/drizzle";
 
-defineProps<{
+const props = defineProps<{
   post: SerializeObject<Post>;
   category: SerializeObject<Category>;
   topic: SerializeObject<Topic>;
   user?: SerializeObject<User>;
 }>();
+
+const content = micromark(props.post.content);
 </script>

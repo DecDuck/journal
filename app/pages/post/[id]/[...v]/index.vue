@@ -78,7 +78,7 @@
             </span>
             <PostReplyContent
               :author="author"
-              :content="content"
+              :content="post.content"
               :attachments="attachments"
             />
           </div>
@@ -179,7 +179,6 @@
 
 <script setup lang="ts">
 import { ChevronRightIcon, HomeIcon } from "@heroicons/vue/24/outline";
-import { micromark } from "micromark";
 import { relativeTime } from "~/composables/data";
 import { ReplyForm } from "~~/forms/reply";
 
@@ -229,8 +228,6 @@ const pages = [
     href: topic ? `/topic/${topic.id}` : "#",
   },
 ];
-
-const content = micromark(post.content);
 
 const activity = computed(() => [
   { ...post, author, type: "posted" },

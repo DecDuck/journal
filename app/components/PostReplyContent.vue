@@ -8,7 +8,10 @@
     >
     <PermissionBadge :level="author.permissionLevel" />
   </p>
-  <div class="mt-1 prose prose-blue dark:prose-invert wrap-break-word" v-html="content" />
+  <div
+    class="mt-1 prose prose-blue dark:prose-invert wrap-break-word"
+    v-html="htmlContent"
+  />
 
   <div class="mt-8 py-4 border-t border-zinc-200 dark:border-zinc-700">
     <div
@@ -22,11 +25,14 @@
         :download-url="useObject(file.downloadId)"
       />
     </div>
-    <p v-else class="text-zinc-400 dark:text-zinc-600 text-sm">No attachments.</p>
+    <p v-else class="text-zinc-400 dark:text-zinc-600 text-sm">
+      No attachments.
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { micromark } from "micromark";
 import type { SerializeObject } from "nitropack";
 import type { User } from "~~/server/utils/drizzle";
 
@@ -35,4 +41,6 @@ const props = defineProps<{
   content: string;
   attachments?: Array<FileAttachment & { downloadId: string }>;
 }>();
+
+const htmlContent = micromark(props.content);
 </script>
