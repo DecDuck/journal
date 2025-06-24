@@ -6,7 +6,6 @@ import { throwyZod } from "~~/server/validation";
 
 export const FetchPost = z.object({
   id: z.string(),
-  topicId: z.string().optional(),
 });
 
 export default defineEventHandler(async (h3) => {
@@ -23,10 +22,7 @@ export default defineEventHandler(async (h3) => {
       .where(
         and(
           eq(post.id, validatedQuery.id),
-          lte(category.readPermission, permissionLevel),
-          validatedQuery.topicId
-            ? eq(post.topicId, validatedQuery.topicId)
-            : undefined
+          lte(category.readPermission, permissionLevel)
         )
       )
       .innerJoin(category, eq(post.categoryId, category.id))
