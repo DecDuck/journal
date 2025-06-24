@@ -65,17 +65,6 @@
             />
           </div>
           <div class="flex-1 w-full">
-            <span class="font-mono text-zinc-100">
-              {{ category }}:
-
-              {{ post.categoryId }}
-
-              /
-
-              {{ topic }}:
-
-              {{ post.topicId }}
-            </span>
             <PostReplyContent
               :author="author"
               :content="post.content"
