@@ -19,16 +19,12 @@ export async function headBlob(
 
 export async function mapAttachments(attachments: string[]) {
   const blob = hubBlob();
-  return await Promise.all(
+  const mapped = await Promise.all(
     attachments
       .filter((e) => e) // If we split on "", we get [""]
       .map(async (e) => {
         const metadata = await headBlob(blob, e);
-        if (!metadata)
-          throw createError({
-            statusCode: 500,
-            statusMessage: "Attachment added but does not exist: " + e,
-          });
+        if (!metadata) return undefined;
         return {
           filename: metadata.customMetadata.filename!,
           size: metadata.size,
@@ -37,4 +33,5 @@ export async function mapAttachments(attachments: string[]) {
         };
       })
   );
+  return mapped.filter((e) => e !== undefined);
 }

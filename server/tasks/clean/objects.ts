@@ -37,7 +37,9 @@ export default defineTask({
     } while (hasMore);
 
     console.log(`Deleting: ${unreferencedObjects.length}`);
-    await blob.del(unreferencedObjects);
+    if (unreferencedObjects.length > 0) {
+      await blob.del(unreferencedObjects);
+    }
 
     return { result: true, deleted: unreferencedObjects.length };
   },
