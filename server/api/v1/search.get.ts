@@ -10,7 +10,6 @@ const SearchQuery = z.object({
 export default definePaginatedEndpoint(
   SearchQuery,
   async (drizzle, options, permissions, offset, limit) => {
-    await new Promise((r) => setTimeout(r, 10000));
     const likeStr = `%${options.q.toLowerCase()}%`; // This SHOULD be an SQL injection vulnerability
 
     const query = and(
