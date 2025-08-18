@@ -204,7 +204,10 @@ const pageIndexes = computed<
   }
 );
 
-await update(page.value);
+await new Promise((r) => {
+  update(page.value).then(r);
+  setTimeout(r, 500);
+});
 
 watch(page, (v) => {
   value.value!.results = undefined;
@@ -212,10 +215,13 @@ watch(page, (v) => {
 });
 
 if (props.opts) {
-  watch(() => props.opts, () => {
-    value.value!.results = undefined;
-    update(page.value);
-  });
+  watch(
+    () => props.opts,
+    () => {
+      value.value!.results = undefined;
+      update(page.value);
+    }
+  );
 }
 
 function setPage(index: number) {
